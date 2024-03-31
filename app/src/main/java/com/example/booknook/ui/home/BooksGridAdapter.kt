@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.booknook.R
 import com.example.booknook.api.Book
 import com.example.booknook.databinding.BookItemBinding
+import com.example.booknook.glide.Glide
 
 class BookGridAdapter(private val viewModel: HomeViewModel) : ListAdapter<Book, BookGridAdapter.VH>(BookDiff()) {
 
@@ -17,6 +18,7 @@ class BookGridAdapter(private val viewModel: HomeViewModel) : ListAdapter<Book, 
             layoutParams.width = bookItem.bookImageWidth
             layoutParams.height = bookItem.bookImageHeight
             bookItemBinding.bookCover.layoutParams = layoutParams
+            Glide.glideFetch(bookItem.imageUrl, bookItemBinding.bookCover)
 
             bookItemBinding.BookTitle.text = bookItem.title
             bookItemBinding.bookmarkIcon.setOnClickListener {

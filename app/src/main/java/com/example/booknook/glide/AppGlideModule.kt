@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.booknook.MainActivity
 import com.example.booknook.R
 
-
+//Adapted from CS378 HW5: Reddit
 @GlideModule
 class AppGlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
@@ -44,25 +44,15 @@ object Glide {
         return Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY).toString()
     }
 
-    fun glideFetch(urlString: String, thumbnailURL: String, imageView: ImageView) {
-//        if (MainActivity.globalDebug) {
-//            assetFetch(urlString, imageView)
-//        } else {
+    fun glideFetch(urlString: String, imageView: ImageView) {
             GlideApp.with(imageView.context)
-                .asBitmap() // Try to display animated Gifs and video still
+                .asBitmap()
                 .load(fromHtml(urlString))
                 .apply(glideOptions)
-//                .error(R.color.colorAccent)
                 .override(width, height)
                 .error(
-                    GlideApp.with(imageView.context)
-                        .asBitmap()
-                        .load(fromHtml(thumbnailURL))
-                        .apply(glideOptions)
-//                        .error(R.color.colorAccent)
-                        .override(500, 500)
+                    R.drawable.empty_book_background
                 )
                 .into(imageView)
-//        }
     }
 }
