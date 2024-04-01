@@ -36,4 +36,5 @@
         app:layout_constraintEnd_toEndOf="@id/bookCover"
         android:src="@drawable/baseline_bookmark_border_24" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

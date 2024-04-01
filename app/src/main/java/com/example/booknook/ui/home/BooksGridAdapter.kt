@@ -10,19 +10,38 @@ import com.example.booknook.api.Book
 import com.example.booknook.databinding.BookItemBinding
 import com.example.booknook.glide.Glide
 
-class BookGridAdapter(private val viewModel: HomeViewModel) : ListAdapter<Book, BookGridAdapter.VH>(BookDiff()) {
+class BookGridAdapter(private val viewModel: HomeViewModel,
+                      private val navigateToAddToBookboardPopup: (Book)->Unit)
+    : ListAdapter<Book, BookGridAdapter.VH>(BookDiff()) {
 
     inner class VH(private val bookItemBinding: BookItemBinding) : RecyclerView.ViewHolder(bookItemBinding.root) {
         fun bind(bookItem: Book) {
+            // setting book height and width for photo
             val layoutParams = bookItemBinding.bookCover.layoutParams
             layoutParams.width = bookItem.bookImageWidth
             layoutParams.height = bookItem.bookImageHeight
             bookItemBinding.bookCover.layoutParams = layoutParams
+            // setting photo using Glide
             Glide.glideFetch(bookItem.imageUrl, bookItemBinding.bookCover)
-
+            // setting book title
             bookItemBinding.BookTitle.text = bookItem.title
-            bookItemBinding.bookmarkIcon.setOnClickListener {
+            // setting bookmarked icon functionality
+            if (viewModel.isSaved(bookItem))
                 bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_24)
+            else
+                bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_border_24)
+
+            bookItemBinding.bookmarkIcon.setOnClickListener {
+                if (!viewModel.isSaved(bookItem)) {
+                    bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_24)
+                    viewModel.addBookToBookmarkedList(bookItem)
+                    navigateToAddToBookboardPopup(bookItem)
+                }
+                else {
+                    bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_border_24)
+                    viewModel.removeBookFromBookmarkedList(bookItem)
+                    // XXX need to remove from bookboards
+                }
             }
         }
     }

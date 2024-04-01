@@ -8,8 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.booknook.R
 import com.example.booknook.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -22,7 +25,9 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private fun initAdapter(binding: FragmentHomeBinding) {
-        val booksGridAdapter = BookGridAdapter(viewModel)
+        val booksGridAdapter = BookGridAdapter(viewModel) {
+            AddToBookBoardFragment.newInstance(it).show(parentFragmentManager, "add to bookboard popup")
+        }
 
         viewModel.observeNetBooks().observe(viewLifecycleOwner) {
             booksGridAdapter.submitList(it)
@@ -46,7 +51,19 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter(binding)
-        // XXX swipe layout
+        initSwipeLayout(binding.swipeRefreshLayout)
+    }
+
+    private fun initSwipeLayout(swipe : SwipeRefreshLayout) {
+        // XXX Write me
+        swipe.isRefreshing = false
+        viewModel.observeFetchDone().observe(viewLifecycleOwner) {
+            swipe.isRefreshing = it == false
+        }
+        // not sure if this is right
+        swipe.setOnRefreshListener {
+            viewModel.netRefresh()
+        }
     }
 
     override fun onDestroyView() {
