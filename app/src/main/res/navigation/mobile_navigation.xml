@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/navigation_boards"
-        android:name="com.example.booknook.ui.dashboard.BoardsFragment"
+        android:name="com.example.booknook.ui.boards.BoardsFragment"
         android:label="@string/title_boards"
         tools:layout="@layout/fragment_boards" />
 

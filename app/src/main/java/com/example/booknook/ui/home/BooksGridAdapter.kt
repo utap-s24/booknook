@@ -51,7 +51,7 @@ class BookGridAdapter(private val viewModel: HomeViewModel,
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(getItem(position) )
+        holder.bind(getItem(position))
     }
 
     class BookDiff : DiffUtil.ItemCallback<Book>() {

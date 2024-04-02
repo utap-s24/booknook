@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.example.booknook.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booknook.api.Book
 import com.example.booknook.databinding.FragmentAddToBookboardBinding
 import com.example.booknook.glide.Glide
@@ -30,8 +28,15 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
             }
         }
     }
-    private fun initAdapter(binding: FragmentAddToBookboardBinding) {
-        // XXX Recycler view for BookBoards
+    private fun initAdapter(binding: FragmentAddToBookboardBinding, book : Book) {
+        val bookBoardsListAdapter = BookBoardsCheckboxAdapter(viewModel) {
+           it.booksInBoard.add(book)
+        }
+        viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
+            bookBoardsListAdapter.submitList(it)
+        }
+        binding.recyclerViewChecklist.adapter = bookBoardsListAdapter
+        binding.recyclerViewChecklist.layoutManager = LinearLayoutManager(activity)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +50,12 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initAdapter(binding)
+
         val book = arguments?.getSerializable("bookKey") as Book?
+
+        if (book != null) {
+            initAdapter(binding, book)
+        }
 
         if (book != null) {
             val layoutParams = binding.bookCover.layoutParams
@@ -59,7 +68,6 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
         binding.AuthorText.text = book?.author
 
         binding.doneButton.setOnClickListener {
-            // XXX COLLECT CHECKED BOOK BOARDS FROM RECYCLER VIEW & ADD BOOK
             dismiss()
         }
     }
