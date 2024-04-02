@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.booknook.databinding.FragmentProfileBinding
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
 
@@ -16,6 +18,9 @@ class ProfileFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +36,17 @@ class ProfileFragment : Fragment() {
         val textView: TextView = binding.textProfile
         profileViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
+        }
+
+        profileViewModel.updateUsername()
+
+        profileViewModel.observeUsername().observe(viewLifecycleOwner) {
+            binding.username.text = it
+        }
+
+        binding.logoutButton.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+
         }
         return root
     }

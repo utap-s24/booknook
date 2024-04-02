@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    private val apiKey = "wwz1OYAA50xYPs10UzXGanP7z1fN2v0a"
+    private val apiKey = ""
     private val newYorkTimesAPI = NewYorkTimesAPI.create()
     private val newYorkTimesBookRepo = BookRepository(newYorkTimesAPI)
     private val fetchDone = MutableLiveData(false)

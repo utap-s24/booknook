@@ -8,10 +8,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.booknook.databinding.ActivityMainBinding
+import com.example.booknook.ui.profile.AuthInit
+import com.example.booknook.ui.profile.ProfileViewModel
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,5 +37,7 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
     }
 }
