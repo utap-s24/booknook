@@ -5,6 +5,32 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
+    <LinearLayout
+        android:id="@+id/SearchBarLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        >
+        <SearchView
+            android:id="@+id/SearchBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/search_bar_background"
+            >
+        </SearchView>
+        <TextView
+            android:id="@+id/popularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/popular"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginStart="100dp"/>
+    </LinearLayout>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

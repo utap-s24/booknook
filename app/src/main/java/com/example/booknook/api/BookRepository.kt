@@ -5,8 +5,8 @@ class BookRepository(private val newYorkTimesAPI: NewYorkTimesAPI) {
     // returns books from all listings/genres
     private fun unpackBooksResponse(response: NewYorkTimesAPI.NYTBooksApiResponse): List<Book> {
         val books = mutableListOf<Book>()
-        response.results.lists.forEach {
-            it.books.forEach {
+        response.results.lists.forEach { list ->
+            list.books.forEach {
                 books.add(it)
             }
         }
