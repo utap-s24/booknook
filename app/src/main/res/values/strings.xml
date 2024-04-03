@@ -10,4 +10,6 @@
     <string name="name_of_board_title_here">Name of Board Title Here</string>
     <string name="saved_to_bookmarks">Saved to Bookmarks</string>
     <string name="book_cover">book cover</string>
+    <string name="search_booknook">Search BookNook</string>
+    <string name="popular">Popular</string>
 </resources>

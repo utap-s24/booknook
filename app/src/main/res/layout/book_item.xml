@@ -7,13 +7,15 @@
 <!-- CREATED BY CHATGPT -->
     <ImageView
         android:id="@+id/bookCover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="165dp"
+        android:src="@drawable/empty_book_background"
         android:background="@color/cardview_dark_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/book_cover" />
 
     <TextView
         android:id="@+id/BookTitle"
