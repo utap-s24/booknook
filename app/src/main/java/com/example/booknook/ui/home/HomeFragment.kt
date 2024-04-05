@@ -12,8 +12,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.booknook.databinding.FragmentHomeBinding
-import com.example.booknook.ui.profile.AuthInit
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
@@ -24,9 +22,6 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
-
-    }
 
     private fun initAdapter(binding: FragmentHomeBinding) {
         val booksGridAdapter = BookGridAdapter(viewModel) {
@@ -54,8 +49,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        AuthInit(viewModel, signInLauncher)
         return binding.root
     }
 
