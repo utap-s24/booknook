@@ -1,6 +1,7 @@
 package com.example.booknook
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,10 +9,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.booknook.databinding.ActivityMainBinding
+import com.example.booknook.ui.profile.AuthInit
+import com.example.booknook.ui.profile.ProfileViewModel
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
+    private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,5 +40,13 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val thisAuth = FirebaseAuth.getInstance()
+        thisAuth.addAuthStateListener {
+            if (thisAuth.currentUser == null) {
+                AuthInit(viewModel, signInLauncher)
+                navController.navigate(R.id.navigation_home)
+            }
+        }
     }
 }

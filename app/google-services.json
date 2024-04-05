@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951773345868",
+    "project_id": "booknook-da35f",
+    "storage_bucket": "booknook-da35f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951773345868:android:7b27a266906de4de345ce9",
+        "android_client_info": {
+          "package_name": "com.example.booknook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHDouwao30uFAMRe7CETgcOZVK-VL_mTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
