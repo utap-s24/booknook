@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--AI GENERATED-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#f2f2f2"/> <!-- Background color of the SearchView -->
+    <corners android:radius="300dp"/> <!-- Adjust the corner radius here -->
+</shape>

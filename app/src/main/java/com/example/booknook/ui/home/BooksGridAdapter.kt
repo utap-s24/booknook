@@ -17,12 +17,15 @@ class BookGridAdapter(private val viewModel: HomeViewModel,
     inner class VH(private val bookItemBinding: BookItemBinding) : RecyclerView.ViewHolder(bookItemBinding.root) {
         fun bind(bookItem: Book) {
             // setting book height and width for photo
-            val layoutParams = bookItemBinding.bookCover.layoutParams
-            layoutParams.width = bookItem.bookImageWidth
-            layoutParams.height = bookItem.bookImageHeight
-            bookItemBinding.bookCover.layoutParams = layoutParams
+            if (bookItem.bookImageHeight > 0 && bookItem.bookImageWidth > 0) {
+                val layoutParams = bookItemBinding.bookCover.layoutParams
+                layoutParams.width = bookItem.bookImageWidth
+                layoutParams.height = bookItem.bookImageHeight
+                bookItemBinding.bookCover.layoutParams = layoutParams
+            }
             // setting photo using Glide
             Glide.glideFetch(bookItem.imageUrl, bookItemBinding.bookCover)
+            println(bookItem.imageUrl)
             // setting book title
             bookItemBinding.BookTitle.text = bookItem.title
             // setting bookmarked icon functionality
@@ -51,7 +54,7 @@ class BookGridAdapter(private val viewModel: HomeViewModel,
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(getItem(position) )
+        holder.bind(getItem(position))
     }
 
     class BookDiff : DiffUtil.ItemCallback<Book>() {
