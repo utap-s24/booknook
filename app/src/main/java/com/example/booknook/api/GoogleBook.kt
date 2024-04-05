@@ -13,7 +13,7 @@ data class GoogleBook (
     @SerializedName("publishedDate")
     val datePublished: String?,
     @SerializedName("industryIdentifiers")
-    val isbn: List<IsbnValue>,
+    val isbn: List<IsbnValue>?,
     @SerializedName("pageCount")
     val pageCount: Int,
     @SerializedName("description")

@@ -55,21 +55,28 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun transformGoogleBookIntoBook(googleBooks : List<GoogleBook>): List<Book> {
-        return googleBooks.map { googleBook -> Book(
-            amazonProductUrl = "",
-            title = googleBook.title,
-            author = googleBook.authors?.joinToString(", ") ?: "",
-            description = googleBook.description ?: "",
-            imageUrl = googleBook.imageData?.bookCover ?: "",
-            bookImageWidth = 0,
-            bookImageHeight = 0,
-            publisher = "",
-            isbn10 = googleBook.isbn.find { it.isbnType == "ISBN_10" }?.identifier ?: "", // Extract ISBN-10
-            isbn13 = googleBook.isbn.find { it.isbnType == "ISBN_13" }?.identifier ?: "", // Extract ISBN-13
-            nytRank = 0,
-            buyLinks = emptyList()
-        )}
+    fun transformGoogleBookIntoBook(googleBooks: List<GoogleBook>): List<Book> {
+        return googleBooks.filter { googleBook ->
+            // Check if isbn is not null and then ensure both ISBN_10 and ISBN_13 are present
+            googleBook.isbn?.any { it.isbnType == "ISBN_10" } == true &&
+                    googleBook.isbn?.any { it.isbnType == "ISBN_13" } == true
+        }.map { googleBook ->
+            // It's safe to proceed with transformation since isbn is not null and both types are present
+            Book(
+                amazonProductUrl = "",
+                title = googleBook.title,
+                author = googleBook.authors?.joinToString(", ") ?: "",
+                description = googleBook.description ?: "",
+                imageUrl = googleBook.imageData?.bookCover ?: "",
+                bookImageWidth = 0,
+                bookImageHeight = 0,
+                publisher = "",
+                isbn10 = googleBook.isbn?.find { it.isbnType == "ISBN_10" }?.identifier ?: "",
+                isbn13 = googleBook.isbn?.find { it.isbnType == "ISBN_13" }?.identifier ?: "",
+                nytRank = 0,
+                buyLinks = emptyList()
+            )
+        }
     }
     // BOOKMARKED BOOKS
     fun isSaved(book: Book): Boolean {
