@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    private val apiKey = "ZnNHDMmNghptEOyY0eWjQPVyZ9CaYteF"
+    private val apiKey = ""
     private val newYorkTimesAPI = NewYorkTimesAPI.create()
     private val newYorkTimesBookRepo = BookRepository(newYorkTimesAPI)
     private val googleBooksAPI = GoogleBooksAPI.create()
