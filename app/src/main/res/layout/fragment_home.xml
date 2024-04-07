@@ -29,6 +29,7 @@
             android:text="@string/popular"
             android:textStyle="bold"
             android:textSize="25sp"
+            android:fontFamily="@font/dm_serif_display_italic"
             android:layout_marginStart="100dp"/>
     </LinearLayout>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booknook.MainViewModel
 import com.example.booknook.R
 import com.example.booknook.api.Book
 import com.example.booknook.databinding.BookItemBinding
 import com.example.booknook.glide.Glide
 
-class BookGridAdapter(private val viewModel: HomeViewModel,
+class BookGridAdapter(private val viewModel: MainViewModel,
                       private val navigateToAddToBookboardPopup: (Book)->Unit)
     : ListAdapter<Book, BookGridAdapter.VH>(BookDiff()) {
 

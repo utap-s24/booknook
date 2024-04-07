@@ -11,12 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.booknook.MainViewModel
 import com.example.booknook.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and

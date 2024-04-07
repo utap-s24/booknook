@@ -10,7 +10,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.booknook.databinding.ActivityMainBinding
 import com.example.booknook.ui.profile.AuthInit
-import com.example.booknook.ui.profile.ProfileViewModel
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.firebase.auth.FirebaseAuth
 
