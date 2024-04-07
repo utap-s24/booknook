@@ -1,7 +1,6 @@
 package com.example.booknook.ui.boards
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,8 +9,9 @@ import com.example.booknook.MainViewModel
 import com.example.booknook.databinding.BookBoardRowBinding
 import com.example.booknook.glide.Glide
 
-class BookBoardsAdapter(private val viewModel: MainViewModel)
-    : ListAdapter<BookBoard, BookBoardsAdapter.VH>(BookBoardDiff()) {
+class BookBoardRowAdapter(private val viewModel: MainViewModel,
+                          private val navigateToBookBoardView : (BookBoard) -> Unit)
+    : ListAdapter<BookBoard, BookBoardRowAdapter.VH>(BookBoardDiff()) {
 
     inner class VH(private val bookBoardRowBinding: BookBoardRowBinding) : RecyclerView.ViewHolder(bookBoardRowBinding.root) {
         fun bind(bookBoard: BookBoard) {
@@ -53,6 +53,10 @@ class BookBoardsAdapter(private val viewModel: MainViewModel)
 //            else {
 //                bookBoardRowBinding.bookPreview4.visibility = View.INVISIBLE
 //            }
+
+            bookBoardRowBinding.root.setOnClickListener {
+                navigateToBookBoardView(bookBoard)
+            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {

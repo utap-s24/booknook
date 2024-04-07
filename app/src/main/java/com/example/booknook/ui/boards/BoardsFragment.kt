@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booknook.MainViewModel
 import com.example.booknook.databinding.FragmentBoardsBinding
@@ -20,7 +21,10 @@ class BoardsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private fun initAdapter(binding: FragmentBoardsBinding) {
-        val bookBoardsAdapter = BookBoardsAdapter(viewModel)
+        val bookBoardsAdapter = BookBoardRowAdapter(viewModel) {
+            findNavController().navigate(BoardsFragmentDirections.navigationBoardsToOneBoard(it))
+        }
+
         viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
             bookBoardsAdapter.submitList(it)
         }

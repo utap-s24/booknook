@@ -12,4 +12,5 @@
     <string name="book_cover">book cover</string>
     <string name="search_booknook">Search BookNook</string>
     <string name="popular">Popular</string>
+    <string name="zero_books">0 Books</string>
 </resources>

@@ -16,7 +16,21 @@
         android:id="@+id/navigation_boards"
         android:name="com.example.booknook.ui.boards.BoardsFragment"
         android:label="@string/title_boards"
-        tools:layout="@layout/fragment_boards" />
+        tools:layout="@layout/fragment_boards">
+        <action
+            android:id="@+id/navigation_boards_to_oneBoard"
+            app:destination="@id/navigation_one_board" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_one_board"
+        android:name="com.example.booknook.ui.boards.OneBoardFragment"
+        android:label="One Board"
+        tools:layout="@layout/one_board_fragment" >
+        <argument app:argType="com.example.booknook.ui.boards.BookBoard"
+            android:name="BookBoard" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/navigation_profile"
