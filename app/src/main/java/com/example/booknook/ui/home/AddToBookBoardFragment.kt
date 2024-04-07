@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.booknook.MainViewModel
 import com.example.booknook.api.Book
 import com.example.booknook.databinding.FragmentAddToBookboardBinding
 import com.example.booknook.glide.Glide
+import com.example.booknook.ui.boards.SavedBook
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AddToBookBoardFragment : BottomSheetDialogFragment()  {
-    private val viewModel: HomeViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentAddToBookboardBinding? = null
 
     private val binding get() = _binding!!
@@ -30,7 +32,10 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
     }
     private fun initAdapter(binding: FragmentAddToBookboardBinding, book : Book) {
         val bookBoardsListAdapter = BookBoardsCheckboxAdapter(viewModel) {
-           it.booksInBoard.add(book)
+//           it.booksInBoard.add(book)
+            // CALL VIEWMODEL ADD_TO_BOOKBOARD_DATABASE AND HAVE IT RETURN NEW ID
+            // PASS ID TO IT.BOOKSINBOARD.ADD(SAVEDBOOK(ID, ...)
+            it.booksInBoard.add(SavedBook("tempId", book.title, listOf(book.author), book.imageUrl, book.isbn10, book.isbn13))
         }
         viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
             bookBoardsListAdapter.submitList(it)

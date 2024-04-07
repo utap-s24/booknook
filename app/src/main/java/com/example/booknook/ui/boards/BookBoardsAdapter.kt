@@ -1,17 +1,16 @@
 package com.example.booknook.ui.boards
 
-import com.example.booknook.ui.home.HomeViewModel
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booknook.MainViewModel
 import com.example.booknook.databinding.BookBoardRowBinding
 import com.example.booknook.glide.Glide
 
-class BookBoardsAdapter(private val viewModel: HomeViewModel)
+class BookBoardsAdapter(private val viewModel: MainViewModel)
     : ListAdapter<BookBoard, BookBoardsAdapter.VH>(BookBoardDiff()) {
 
     inner class VH(private val bookBoardRowBinding: BookBoardRowBinding) : RecyclerView.ViewHolder(bookBoardRowBinding.root) {
@@ -22,35 +21,38 @@ class BookBoardsAdapter(private val viewModel: HomeViewModel)
                     bookBoard.booksInBoard[0].imageUrl,
                     bookBoardRowBinding.bookPreview1
                 )
-            } else {
-                bookBoardRowBinding.bookPreview1.visibility = View.INVISIBLE
             }
+//            else {
+//                bookBoardRowBinding.bookPreview1.visibility = View.INVISIBLE
+//            }
             if (bookBoard.booksInBoard.size >= 2) {
                 Glide.glideFetch(
                     bookBoard.booksInBoard[1].imageUrl,
                     bookBoardRowBinding.bookPreview2
                 )
             }
-            else {
-                bookBoardRowBinding.bookPreview2.visibility = View.INVISIBLE
-            }
+//            else {
+//                bookBoardRowBinding.bookPreview2.visibility = View.INVISIBLE
+//            }
 
             if (bookBoard.booksInBoard.size >= 3) {
                 Glide.glideFetch(
                     bookBoard.booksInBoard[2].imageUrl,
                     bookBoardRowBinding.bookPreview3
                 )
-            } else {
-                bookBoardRowBinding.bookPreview3.visibility = View.INVISIBLE
             }
+//            else {
+//                bookBoardRowBinding.bookPreview3.visibility = View.INVISIBLE
+//            }
             if (bookBoard.booksInBoard.size >= 4) {
                 Glide.glideFetch(
                     bookBoard.booksInBoard[3].imageUrl,
                     bookBoardRowBinding.bookPreview4
                 )
-            } else {
-                bookBoardRowBinding.bookPreview4.visibility = View.INVISIBLE
             }
+//            else {
+//                bookBoardRowBinding.bookPreview4.visibility = View.INVISIBLE
+//            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {

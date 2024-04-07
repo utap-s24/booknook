@@ -1,10 +1,9 @@
 package com.example.booknook.ui.boards
 
-import com.example.booknook.api.Book
-
 data class BookBoard(
-    val bookBoardId: Int,
+    val bookBoardId: String,
+    val isPublic: Boolean,
     val bookBoardTitle: String,
     val numBooksInBoard: Int,
-    val booksInBoard: MutableList<Book>,
+    val booksInBoard: MutableList<SavedBook>,
 )

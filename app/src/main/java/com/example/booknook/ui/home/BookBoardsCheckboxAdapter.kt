@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booknook.MainViewModel
 import com.example.booknook.R
 import com.example.booknook.databinding.BookBoardCheckRowBinding
 import com.example.booknook.glide.Glide
 import com.example.booknook.ui.boards.BookBoard
 
-class BookBoardsCheckboxAdapter(private val viewModel: HomeViewModel,
+class BookBoardsCheckboxAdapter(private val viewModel: MainViewModel,
                                 private val addBookToBoard : (BookBoard) -> Unit)
     : ListAdapter<BookBoard, BookBoardsCheckboxAdapter.VH>(BookBoardsCheckboxAdapter.BookBoardDiff()) {
 
