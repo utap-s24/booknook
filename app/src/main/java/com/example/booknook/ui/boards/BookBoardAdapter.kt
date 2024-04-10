@@ -32,13 +32,13 @@ class BookBoardAdapter(private val viewModel: MainViewModel)
 
     class SavedBookDiff : DiffUtil.ItemCallback<SavedBook>() {
         override fun areItemsTheSame(oldItem: SavedBook, newItem: SavedBook): Boolean {
-            return oldItem.bookId == newItem.bookId
+            return oldItem.docId == newItem.docId
         }
         // XXX may need to compare books in board
         override fun areContentsTheSame(oldItem: SavedBook, newItem: SavedBook): Boolean {
             return oldItem.title == newItem.title &&
-                    oldItem.ibsn10 == newItem.ibsn10 &&
-                    oldItem.ibsn13 == newItem.ibsn13
+                    oldItem.isbn10 == newItem.isbn10 &&
+                    oldItem.isbn13 == newItem.isbn13
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.booknook
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.example.booknook.api.GoogleBooksAPI
 import com.example.booknook.api.GoogleBooksRepository
 import com.example.booknook.api.NewYorkTimesAPI
 import com.example.booknook.ui.boards.BookBoard
+import com.example.booknook.ui.boards.SavedBook
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
@@ -18,10 +20,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = "Ss5agscGIFD0Sv7es8krx0AA0aPhc95G"
-    private val db = Firebase.firestore
-    // auth
+    private val apiKey = ""
     private val username = MutableLiveData<String>()
+    private val dbViewModel = DatabaseViewModel()
 
     private val newYorkTimesAPI = NewYorkTimesAPI.create()
     private val newYorkTimesBookRepo = BookRepository(newYorkTimesAPI)
@@ -31,14 +32,12 @@ class MainViewModel: ViewModel() {
     private var netBooks = MutableLiveData<List<Book>>()
     private var netSearchBooks = MutableLiveData<List<GoogleBook>>()
     private var booksBookmarked = MutableLiveData<List<Book>>(emptyList())
-    private var bookBoardsList = MutableLiveData<List<BookBoard>>(mutableListOf(
-        BookBoard("0", true, "Gothic Fantasy", 0, mutableListOf()),
-        BookBoard("1", true, "Self Help & Lifestyle", 0, mutableListOf()),
-                BookBoard("2", true, "Friends to Lovers Romance", 0, mutableListOf())
-        )
-    )
+    private var bookBoardsList = MutableLiveData<List<BookBoard>>(mutableListOf())
     init {
         netRefresh()
+        dbViewModel.fetchBookBoard {
+            bookBoardsList.postValue(it)
+        }
     }
     fun netRefresh() {
         fetchDone.postValue(false)
@@ -48,6 +47,7 @@ class MainViewModel: ViewModel() {
             fetchDone.postValue(true)
         }
     }
+    // FIREBASE
     fun updateUsername() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
@@ -94,10 +94,7 @@ class MainViewModel: ViewModel() {
         }
     }
     // BOOKMARKED BOOKS
-    fun fetchSavedBooks() {
-        db.collection("Bookmarked Books").document("yourDocumentId")
 
-    }
     fun isSaved(book: Book): Boolean {
         if (booksBookmarked.value == null)
             return false
@@ -110,12 +107,19 @@ class MainViewModel: ViewModel() {
         booksBookmarked.value?.filter { book != it }
     }
     // BOOK BOARDS
-    fun createBookBoard(title : String) {
+    fun createBookBoard(title : String, public : Boolean) {
         // XXX get doc ID
-        bookBoardsList.postValue(bookBoardsList.value?.plus(BookBoard("", true, title, 0, mutableListOf())))
+        val newBoard = FirebaseAuth.getInstance().currentUser?.uid?.let { BookBoard("", it, public, title, mutableListOf()) }
+        if (newBoard == null) {
+            Log.d(javaClass.simpleName, "User must be logged in to create a BookBoard.")
+            return
+        }
+        dbViewModel.createBookBoard(newBoard) {
+            bookBoardsList.postValue(it)
+        }
     }
     fun getBookBoard(id: String) : BookBoard? {
-        return bookBoardsList.value!!.find { it.bookBoardId == id }
+        return bookBoardsList.value!!.find { it.userId == id }
     }
 
     // OBSERVE

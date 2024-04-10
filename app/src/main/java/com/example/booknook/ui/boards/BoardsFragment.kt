@@ -45,6 +45,10 @@ class BoardsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter(binding)
+        binding.newBookBoardButton.setOnClickListener {
+            val createBookBoardPopup = CreateBookBoardPopup()
+            createBookBoardPopup.show(parentFragmentManager, "CcreateBookBoardPopup")
+        }
     }
 
     override fun onDestroyView() {
