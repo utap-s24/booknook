@@ -35,7 +35,7 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
 //           it.booksInBoard.add(book)
             // CALL VIEWMODEL ADD_TO_BOOKBOARD_DATABASE AND HAVE IT RETURN NEW ID
             // PASS ID TO IT.BOOKSINBOARD.ADD(SAVEDBOOK(ID, ...)
-            it.booksInBoard.add(SavedBook("tempId", book.title, listOf(book.author), book.imageUrl, book.isbn10, book.isbn13))
+            it.booksInBoard.add(SavedBook("", book.title, listOf(book.author), book.imageUrl, book.isbn10, book.isbn13))
         }
         viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
             bookBoardsListAdapter.submitList(it)
@@ -56,19 +56,23 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val book = arguments?.getSerializable("bookKey") as Book?
+        val book = arguments?.getSerializable("bookKey", Book::class.java)
 
         if (book != null) {
             initAdapter(binding, book)
         }
 
         if (book != null) {
-            val layoutParams = binding.bookCover.layoutParams
-            layoutParams.width = book.bookImageWidth
-            layoutParams.height = book.bookImageHeight
-            binding.bookCover.layoutParams = layoutParams
+            if (book.bookImageWidth > 0 && book.bookImageHeight > 0) {
+                val layoutParams = binding.bookCover.layoutParams
+                layoutParams.width = book.bookImageWidth
+                layoutParams.height = book.bookImageHeight
+                binding.bookCover.layoutParams = layoutParams
+            }
             Glide.glideFetch(book.imageUrl, binding.bookCover)
         }
+
+
         binding.titleText.text = book?.title
         binding.AuthorText.text = book?.author
 

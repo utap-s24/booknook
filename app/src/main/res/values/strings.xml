@@ -13,4 +13,11 @@
     <string name="search_booknook">Search BookNook</string>
     <string name="popular">Popular</string>
     <string name="zero_books">0 Books</string>
+    <string name="add_new_bookboard">add new bookboard</string>
+    <string name="create">Create</string>
+    <string name="enter_bookboard_name">Enter BookBoard name</string>
+    <string name="are_you_sure_you_want_to_remove">Are you sure you want to remove</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="bookboard_name_here">BookBoard Name Here</string>
 </resources>

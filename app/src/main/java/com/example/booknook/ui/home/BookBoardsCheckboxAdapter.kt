@@ -62,12 +62,11 @@ class BookBoardsCheckboxAdapter(private val viewModel: MainViewModel,
 
     class BookBoardDiff : DiffUtil.ItemCallback<BookBoard>() {
         override fun areItemsTheSame(oldItem: BookBoard, newItem: BookBoard): Boolean {
-            return oldItem.bookBoardId == newItem.bookBoardId
+            return oldItem.docId == newItem.docId
         }
         // XXX may need to compare books in board
         override fun areContentsTheSame(oldItem: BookBoard, newItem: BookBoard): Boolean {
-            return oldItem.bookBoardTitle == newItem.bookBoardTitle &&
-                    oldItem.numBooksInBoard == newItem.numBooksInBoard
+            return oldItem.bookBoardTitle == newItem.bookBoardTitle
         }
     }
 }

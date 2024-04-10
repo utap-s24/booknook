@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.booknook.MainViewModel
 import com.example.booknook.R
 import com.example.booknook.databinding.OneBoardFragmentBinding
+import com.example.booknook.ui.boards.OneBoardFragmentArgs
 
 class OneBoardFragment: Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
@@ -49,6 +50,10 @@ class OneBoardFragment: Fragment() {
             binding.publicButton.setImageResource(R.drawable.baseline_lock_open_24)
         } else {
             binding.publicButton.setImageResource(R.drawable.baseline_lock_24)
+        }
+        binding.deleteIconButton.setOnClickListener {
+            val deletePopup = DeleteBoardPopup.newInstance(args.bookBoard)
+            deletePopup.show(parentFragmentManager, "DeleteBoardPopup")
         }
     }
 
