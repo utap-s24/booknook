@@ -8,23 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.example.booknook.MainViewModel
-import com.example.booknook.R
-import com.example.booknook.databinding.PopupDeleteBinding
+import com.example.booknook.databinding.PopupDeleteBookBinding
 
-class DeleteBoardPopup : DialogFragment() {
+class DeleteBookInBoardPopup : DialogFragment()  {
     private val viewModel: MainViewModel by activityViewModels()
-    private var _binding: PopupDeleteBinding? = null
+    private var _binding: PopupDeleteBookBinding? = null
 
     private val binding get() = _binding!!
 
     companion object {
-        fun newInstance(bookBoard: BookBoard): DeleteBoardPopup {
+        fun newInstance(book: SavedBook, bookBoard: BookBoard): DeleteBookInBoardPopup {
             val args = Bundle().apply {
+                putSerializable("bookKey", book)
                 putSerializable("bookBoardKey", bookBoard)
             }
-            return DeleteBoardPopup ().apply {
+            return DeleteBookInBoardPopup().apply {
                 arguments = args
             }
         }
@@ -35,7 +34,7 @@ class DeleteBoardPopup : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = PopupDeleteBinding.inflate(inflater, container, false)
+        _binding = PopupDeleteBookBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -44,23 +43,25 @@ class DeleteBoardPopup : DialogFragment() {
         // AI GENERATED LINE OF CODE TO GET TRANSPARENT BACKGROUND FOR ROUNDED CORNERS
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val book = arguments?.getSerializable("bookBoardKey", BookBoard::class.java)
+        val book = arguments?.getSerializable("bookKey", SavedBook::class.java)
+        val bookBoard =  arguments?.getSerializable("bookBoardKey", BookBoard::class.java)
 
-        binding.bookBoardName.text = book?.bookBoardTitle
+        binding.bookName.text = book?.title
+        print("authors: ${book?.authors?.joinToString(",").toString()} ")
+        binding.bookAuthor.text = book?.authors?.joinToString(", ").toString()
         binding.buttonCancel.setOnClickListener {
             dismiss()
         }
         binding.buttonDelete.setOnClickListener {
-            if (book != null) {
-                viewModel.deleteBookBoard(book)
+            if (bookBoard != null && book != null) {
+                viewModel.deleteBookFromBookBoard(bookBoard, book)
             }
             dismiss()
-            findNavController().navigate(R.id.navigation_boards)
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }

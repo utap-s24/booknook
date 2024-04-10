@@ -12,5 +12,5 @@ data class BookBoard(
     @PropertyName("bookBoardTitle")
     val bookBoardTitle: String = "",
     @PropertyName("booksInBoard")
-    val booksInBoard: MutableList<SavedBook> = mutableListOf()
+    var booksInBoard: MutableList<SavedBook> = mutableListOf()
 ) : Serializable

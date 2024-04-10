@@ -19,32 +19,32 @@ class BookBoardsCheckboxAdapter(private val viewModel: MainViewModel,
     inner class VH(private val bookBoardCheckRowBinding: BookBoardCheckRowBinding) : RecyclerView.ViewHolder(bookBoardCheckRowBinding.root) {
         fun bind(bookBoard: BookBoard) {
             bookBoardCheckRowBinding.BoardTitle.text = bookBoard.bookBoardTitle
-            if (bookBoard.booksInBoard.isNotEmpty()) {
-                Glide.glideFetch(
-                    bookBoard.booksInBoard[0].imageUrl,
-                    bookBoardCheckRowBinding.bookPreview1
-                )
-            } else {
-                bookBoardCheckRowBinding.bookPreview1.visibility = View.INVISIBLE
-            }
-            if (bookBoard.booksInBoard.size >= 2) {
-                Glide.glideFetch(
-                    bookBoard.booksInBoard[1].imageUrl,
-                    bookBoardCheckRowBinding.bookPreview2
-                )
-            }
-            else {
-                bookBoardCheckRowBinding.bookPreview2.visibility = View.INVISIBLE
-            }
-
-            if (bookBoard.booksInBoard.size >= 3) {
-                Glide.glideFetch(
-                    bookBoard.booksInBoard[2].imageUrl,
-                    bookBoardCheckRowBinding.bookPreview3
-                )
-            } else {
-                bookBoardCheckRowBinding.bookPreview3.visibility = View.INVISIBLE
-            }
+//            if (bookBoard.booksInBoard.isNotEmpty()) {
+//                Glide.glideFetch(
+//                    bookBoard.booksInBoard[0].imageUrl,
+//                    bookBoardCheckRowBinding.bookPreview1
+//                )
+//            } else {
+//                bookBoardCheckRowBinding.bookPreview1.visibility = View.INVISIBLE
+//            }
+//            if (bookBoard.booksInBoard.size >= 2) {
+//                Glide.glideFetch(
+//                    bookBoard.booksInBoard[1].imageUrl,
+//                    bookBoardCheckRowBinding.bookPreview2
+//                )
+//            }
+//            else {
+//                bookBoardCheckRowBinding.bookPreview2.visibility = View.INVISIBLE
+//            }
+//
+//            if (bookBoard.booksInBoard.size >= 3) {
+//                Glide.glideFetch(
+//                    bookBoard.booksInBoard[2].imageUrl,
+//                    bookBoardCheckRowBinding.bookPreview3
+//                )
+//            } else {
+//                bookBoardCheckRowBinding.bookPreview3.visibility = View.INVISIBLE
+//            }
             bookBoardCheckRowBinding.checkbox.setOnClickListener {
                 bookBoardCheckRowBinding.checkbox.setImageResource(R.drawable.baseline_check_circle_24)
                 addBookToBoard(bookBoard)

@@ -20,4 +20,7 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="bookboard_name_here">BookBoard Name Here</string>
+    <string name="book_title">Book Title</string>
+    <string name="author_names">Author Names</string>
+    <string name="remove">Remove</string>
 </resources>

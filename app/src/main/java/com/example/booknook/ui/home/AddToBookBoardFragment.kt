@@ -35,7 +35,7 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
 //           it.booksInBoard.add(book)
             // CALL VIEWMODEL ADD_TO_BOOKBOARD_DATABASE AND HAVE IT RETURN NEW ID
             // PASS ID TO IT.BOOKSINBOARD.ADD(SAVEDBOOK(ID, ...)
-            it.booksInBoard.add(SavedBook("", book.title, listOf(book.author), book.imageUrl, book.isbn10, book.isbn13))
+            viewModel.addBookToBookBoard(it, SavedBook("", book.title, listOf(book.author), book.imageUrl, book.isbn10, book.isbn13))
         }
         viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
             bookBoardsListAdapter.submitList(it)
@@ -71,8 +71,6 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
             }
             Glide.glideFetch(book.imageUrl, binding.bookCover)
         }
-
-
         binding.titleText.text = book?.title
         binding.AuthorText.text = book?.author
 
