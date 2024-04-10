@@ -21,12 +21,13 @@ class OneBoardFragment: Fragment() {
     private val binding get() = _binding!!
 
     private fun initAdapter(binding: OneBoardFragmentBinding) {
-        val bookBoardAdapter = BookBoardAdapter(viewModel)
+        val bookBoardAdapter = BookBoardAdapter(viewModel) {
+            DeleteBookInBoardPopup.newInstance(it, args.bookBoard).show(parentFragmentManager, "DeleteBookInBoardPopup")
+        }
         bookBoardAdapter.submitList(args.bookBoard.booksInBoard)
         binding.recyclerViewBoard.adapter = bookBoardAdapter
         val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.recyclerViewBoard.layoutManager = layoutManager
-
     }
 
     override fun onCreateView(

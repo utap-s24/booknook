@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = ""
+    private val apiKey = "87b40yJ0NXtEMHAlV3Ep08ehLS0eQ6ju"
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -108,7 +108,6 @@ class MainViewModel: ViewModel() {
     }
     // BOOK BOARDS
     fun createBookBoard(title : String, public : Boolean) {
-        // XXX get doc ID
         val newBoard = FirebaseAuth.getInstance().currentUser?.uid?.let { BookBoard("", it, public, title, mutableListOf()) }
         if (newBoard == null) {
             Log.d(javaClass.simpleName, "User must be logged in to create a BookBoard.")
@@ -118,8 +117,27 @@ class MainViewModel: ViewModel() {
             bookBoardsList.postValue(it)
         }
     }
+    fun addBookToBookBoard(bookBoard: BookBoard, book : SavedBook) {
+        if (bookBoard.docId == null)
+            return
+        dbViewModel.addBookToBookBoard(bookBoard.docId!!, book) {
+            bookBoardsList.postValue(it)
+        }
+    }
+    fun deleteBookBoard(bookBoard: BookBoard) {
+        dbViewModel.removeBookBoard(bookBoard) {
+            bookBoardsList.postValue(it)
+        }
+    }
+    fun deleteBookFromBookBoard(bookBoard: BookBoard, book : SavedBook) {
+        if (bookBoard.docId == null)
+            return
+        dbViewModel.removeBookFromBookBoard(bookBoard.docId!!, book) {
+            bookBoardsList.postValue(it)
+        }
+    }
     fun getBookBoard(id: String) : BookBoard? {
-        return bookBoardsList.value!!.find { it.userId == id }
+        return bookBoardsList.value!!.find { it.docId == id }
     }
 
     // OBSERVE

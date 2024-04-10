@@ -6,14 +6,14 @@ import java.io.Serializable
 data class SavedBook(
     var docId: String? = null,
     @PropertyName("title")
-    val title: String,
-    @PropertyName("author")
-    val authors: List<String>,
+    val title: String = "",
+    @PropertyName("authors")
+    val authors: List<String> = listOf(),
     @PropertyName("imageUrl")
-    val imageUrl: String,
+    val imageUrl: String = "",
     @PropertyName("isbn10")
-    val isbn10: String,
+    val isbn10: String = "",
     @PropertyName("isbn13")
-    val isbn13: String
+    val isbn13: String = ""
 
 ) : Serializable

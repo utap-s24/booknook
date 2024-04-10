@@ -9,7 +9,8 @@ import com.example.booknook.MainViewModel
 import com.example.booknook.databinding.BookItemInBoardBinding
 import com.example.booknook.glide.Glide
 
-class BookBoardAdapter(private val viewModel: MainViewModel)
+class BookBoardAdapter(private val viewModel: MainViewModel,
+                        private val removeBook: (book: SavedBook) -> Unit)
     : ListAdapter<SavedBook, BookBoardAdapter.VH>(BookBoardAdapter.SavedBookDiff()) {
 
     inner class VH(private val bookItemInBoardBinding: BookItemInBoardBinding) : RecyclerView.ViewHolder(bookItemInBoardBinding.root) {
@@ -18,6 +19,10 @@ class BookBoardAdapter(private val viewModel: MainViewModel)
                 book.imageUrl,
                 bookItemInBoardBinding.bookCover
             )
+            bookItemInBoardBinding.bookCover.setOnLongClickListener {
+                removeBook(book)
+                true
+            }
         }
     }
 
