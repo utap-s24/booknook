@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.navigation_home)
             }
         }
+
+        viewModel.initUsername()
     }
 
     override fun onSupportNavigateUp(): Boolean {

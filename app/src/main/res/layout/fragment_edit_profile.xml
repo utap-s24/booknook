@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.profile.EditProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="My Profile"
+            android:text="Edit Profile"
             android:fontFamily="@font/dm_serif_display_regular"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -31,7 +31,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"/>
 
-        <TextView
+        <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:textAlignment="center"
             android:textSize="20sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/bio"
             android:layout_width="match_parent"
             android:layout_height="120dp"
@@ -52,33 +52,34 @@
             android:gravity="top"
             />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="My Bookboards"
-            android:textSize="20sp" />
+            android:gravity="center_horizontal" >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:id="@+id/recyclerViewBoards"
-            android:scrollbars="vertical"
-            />
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Save Changes"
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Edit Profile"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:layout_gravity="center"/>
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Logout"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

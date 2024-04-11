@@ -33,6 +33,8 @@ class MainViewModel: ViewModel() {
     private var netSearchBooks = MutableLiveData<List<GoogleBook>>()
     private var booksBookmarked = MutableLiveData<List<Book>>(emptyList())
     private var bookBoardsList = MutableLiveData<List<BookBoard>>(mutableListOf())
+    private var userBio = MutableLiveData<String>()
+    private var displayName = MutableLiveData<String>()
     init {
         netRefresh()
         dbViewModel.fetchBookBoard {
@@ -48,10 +50,11 @@ class MainViewModel: ViewModel() {
         }
     }
     // FIREBASE
-    fun updateUsername() {
+    fun initUsername() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             username.postValue(user.email)
+            displayName.postValue(user.email)
         }
     }
     fun searchGoogleBooks(search : String) {
@@ -140,6 +143,16 @@ class MainViewModel: ViewModel() {
         return bookBoardsList.value!!.find { it.docId == id }
     }
 
+    // PROFILE
+
+    fun updateBio(bio : String) {
+        userBio.postValue(bio)
+    }
+
+    fun updateDisplayName(name : String) {
+        displayName.postValue(name)
+    }
+
     // OBSERVE
     fun observeNetBooks() : LiveData<List<Book>> {
         return netBooks
@@ -155,6 +168,14 @@ class MainViewModel: ViewModel() {
     }
     fun observeUsername() : MutableLiveData<String> {
         return username
+    }
+
+    fun observeBio() : MutableLiveData<String> {
+        return userBio
+    }
+
+    fun observeDisplayName() : MutableLiveData<String> {
+        return displayName
     }
 
 }
