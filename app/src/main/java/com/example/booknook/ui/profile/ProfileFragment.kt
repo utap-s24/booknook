@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booknook.MainViewModel
 import com.example.booknook.databinding.FragmentProfileBinding
 import com.example.booknook.R
-import com.example.booknook.databinding.FragmentBoardsBinding
 import com.example.booknook.ui.boards.BoardsFragmentDirections
 import com.example.booknook.ui.boards.BookBoardRowAdapter
 
