@@ -77,6 +77,23 @@ class DatabaseViewModel {
                 Log.d(javaClass.simpleName, "createBookBoard FAILED ", it)
             }
     }
+    fun updateBookBoardPublicStatus(bookBoard: BookBoard) {
+        val bookBoardDocId = bookBoard.docId
+        if (bookBoardDocId.isNullOrEmpty()) {
+            Log.d(javaClass.simpleName, "Bookboard's document ID is invalid.")
+            return
+        }
+
+        db.collection(rootCollection)
+            .document(bookBoardDocId)
+            .update("public", bookBoard.isPublic)
+            .addOnSuccessListener {
+                Log.d(javaClass.simpleName, "BookBoard public status update recorded SUCCESSFULLY")
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "BookBoard public status update recorded FAILURE")
+            }
+    }
 
     private fun attachDocIdToBook(
         bookBoardDocId: String,

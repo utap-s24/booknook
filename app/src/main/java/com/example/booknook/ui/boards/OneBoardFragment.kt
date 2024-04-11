@@ -52,6 +52,16 @@ class OneBoardFragment: Fragment() {
         } else {
             binding.publicButton.setImageResource(R.drawable.baseline_lock_24)
         }
+        binding.publicButton.setOnClickListener {
+            if (args.bookBoard.isPublic) {
+                binding.publicButton.setImageResource(R.drawable.baseline_lock_24)
+                args.bookBoard.isPublic = false
+            } else {
+                args.bookBoard.isPublic = true
+                binding.publicButton.setImageResource(R.drawable.baseline_lock_open_24)
+            }
+            viewModel.updateBookBoardPublicStatus(args.bookBoard)
+        }
         binding.deleteIconButton.setOnClickListener {
             val deletePopup = DeleteBoardPopup.newInstance(args.bookBoard)
             deletePopup.show(parentFragmentManager, "DeleteBoardPopup")

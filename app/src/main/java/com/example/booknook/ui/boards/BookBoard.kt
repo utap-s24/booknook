@@ -8,7 +8,7 @@ data class BookBoard(
     @PropertyName("userId")
     var userId: String = "",
     @PropertyName("public")
-    val isPublic: Boolean = true,
+    var isPublic: Boolean = true,
     @PropertyName("bookBoardTitle")
     val bookBoardTitle: String = "",
     @PropertyName("booksInBoard")

@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = ""
+    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -141,6 +141,9 @@ class MainViewModel: ViewModel() {
     }
     fun getBookBoard(id: String) : BookBoard? {
         return bookBoardsList.value!!.find { it.docId == id }
+    }
+    fun updateBookBoardPublicStatus(bookBoard: BookBoard) {
+        dbViewModel.updateBookBoardPublicStatus(bookBoard)
     }
 
     // PROFILE
