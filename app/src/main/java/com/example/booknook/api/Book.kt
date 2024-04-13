@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Book(
+    val genres: List<String>? = emptyList(),
+    val subtitle: String? = "",
     @SerializedName("amazon_product_url")
     val amazonProductUrl: String,
     @SerializedName("title")

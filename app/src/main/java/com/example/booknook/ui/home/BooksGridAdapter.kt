@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.booknook.MainViewModel
 import com.example.booknook.R
 import com.example.booknook.api.Book
+import com.example.booknook.api.GoogleBook
 import com.example.booknook.databinding.BookItemBinding
 import com.example.booknook.glide.Glide
 
 class BookGridAdapter(private val viewModel: MainViewModel,
-                      private val navigateToAddToBookboardPopup: (Book)->Unit)
+                      private val navigateToAddToBookBoardPopup: (Book)->Unit,
+private val navigateToBookInfoPopup: (Book) -> Unit)
     : ListAdapter<Book, BookGridAdapter.VH>(BookDiff()) {
 
     inner class VH(private val bookItemBinding: BookItemBinding) : RecyclerView.ViewHolder(bookItemBinding.root) {
@@ -39,13 +41,16 @@ class BookGridAdapter(private val viewModel: MainViewModel,
                 if (!viewModel.isSaved(bookItem)) {
                     bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_24)
                     viewModel.addBookToBookmarkedList(bookItem)
-                    navigateToAddToBookboardPopup(bookItem)
+                    navigateToAddToBookBoardPopup(bookItem)
                 }
                 else {
                     bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_border_24)
                     viewModel.removeBookFromBookmarkedList(bookItem)
                     // XXX need to remove from bookboards
                 }
+            }
+            bookItemBinding.bookCover.setOnClickListener {
+                navigateToBookInfoPopup(bookItem)
             }
         }
     }

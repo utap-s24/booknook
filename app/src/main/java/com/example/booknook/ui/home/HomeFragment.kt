@@ -12,8 +12,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.booknook.MainViewModel
+import com.example.booknook.R
 import com.example.booknook.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import retrofit2.HttpException
 
 class HomeFragment : Fragment() {
 
@@ -25,9 +28,11 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private fun initAdapter(binding: FragmentHomeBinding) {
-        val booksGridAdapter = BookGridAdapter(viewModel) {
-            AddToBookBoardFragment.newInstance(it).show(parentFragmentManager, "add to bookboard popup")
-        }
+        val booksGridAdapter = BookGridAdapter(viewModel, {
+            AddToBookBoardFragment.newInstance(it).show(parentFragmentManager, "AddToBookBoardFragment")
+        }, {
+            BookInfoPopup.newInstance(it).show(parentFragmentManager, "BookInfoPopup")
+        })
 
         viewModel.observeNetBooks().observe(viewLifecycleOwner) {
             binding.popularText.visibility = View.VISIBLE
@@ -92,9 +97,9 @@ class HomeFragment : Fragment() {
         viewModel.observeFetchDone().observe(viewLifecycleOwner) {
             swipe.isRefreshing = it == false
         }
-        // not sure if this is right
         swipe.setOnRefreshListener {
             viewModel.netRefresh()
+            // XXX NEED TO RESTRICT API CALLS TO 5 PER MINUTE
         }
     }
 

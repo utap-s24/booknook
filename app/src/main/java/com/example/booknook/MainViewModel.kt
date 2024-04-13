@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
+    private val apiKey = ""
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -81,6 +81,8 @@ class MainViewModel: ViewModel() {
         }.map { googleBook ->
             // It's safe to proceed with transformation since isbn is not null and there are isbn numbers
             Book(
+                genres = googleBook.genres,
+                subtitle = googleBook.subtitle,
                 amazonProductUrl = "",
                 title = googleBook.title,
                 author = googleBook.authors?.joinToString(", ") ?: "",

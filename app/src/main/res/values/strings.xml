@@ -23,4 +23,7 @@
     <string name="book_title">Book Title</string>
     <string name="author_names">Author Names</string>
     <string name="remove">Remove</string>
+    <string name="new_york_times_bestseller">New York Times Bestseller</string>
+    <string name="description_here">Description here</string>
+    <string name="testing_genre">Testing genre</string>
 </resources>
