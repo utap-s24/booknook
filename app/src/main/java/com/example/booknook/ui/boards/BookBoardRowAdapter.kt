@@ -55,6 +55,7 @@ class BookBoardRowAdapter(private val viewModel: MainViewModel,
 //            }
 
             bookBoardRowBinding.root.setOnClickListener {
+                viewModel.setBooksInOneBoardFragment(bookBoard.booksInBoard)
                 navigateToBookBoardView(bookBoard)
             }
         }

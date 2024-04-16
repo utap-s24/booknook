@@ -1,12 +1,16 @@
 package com.example.booknook.ui.home
 
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -30,6 +34,8 @@ class HomeFragment : Fragment() {
     private fun initAdapter(binding: FragmentHomeBinding) {
         val booksGridAdapter = BookGridAdapter(viewModel, {
             AddToBookBoardFragment.newInstance(it).show(parentFragmentManager, "AddToBookBoardFragment")
+        }, {
+            Toast.makeText(context, "Removed $it", Toast.LENGTH_SHORT).show()
         }, {
             BookInfoPopup.newInstance(it).show(parentFragmentManager, "BookInfoPopup")
         })

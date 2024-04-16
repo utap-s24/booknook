@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = ""
+    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -33,6 +33,7 @@ class MainViewModel: ViewModel() {
     private var netSearchBooks = MutableLiveData<List<GoogleBook>>()
     private var booksBookmarked = MutableLiveData<List<Book>>(emptyList())
     private var bookBoardsList = MutableLiveData<List<BookBoard>>(mutableListOf())
+    private var bookListForOneBoardFragment = MutableLiveData<List<SavedBook>>()
     private var userBio = MutableLiveData<String>()
     private var displayName = MutableLiveData<String>()
     init {
@@ -99,17 +100,22 @@ class MainViewModel: ViewModel() {
         }
     }
     // BOOKMARKED BOOKS
-
-    fun isSaved(book: Book): Boolean {
-        if (booksBookmarked.value == null)
-            return false
-        return booksBookmarked.value!!.contains(book)
+    fun isSaved(isbn10: String, isbn13: String): Boolean {
+        booksBookmarked.value?.let { books ->
+            return books.any { book ->
+                book.isbn10 == isbn10 && book.isbn13 == isbn13
+            }
+        }
+        return false
     }
     fun addBookToBookmarkedList(book: Book) {
         booksBookmarked.postValue(booksBookmarked.value?.plus(book))
     }
-    fun removeBookFromBookmarkedList(book: Book) {
-        booksBookmarked.value?.filter { book != it }
+    fun removeBookFromBookmarkedList(isbn10: String, isbn13: String) {
+        val updatedList = booksBookmarked.value!!.filterNot {
+            it.isbn10 == isbn10 || it.isbn13 == isbn13
+        }
+        booksBookmarked.postValue(updatedList)
     }
     // BOOK BOARDS
     fun createBookBoard(title : String, public : Boolean) {
@@ -139,13 +145,21 @@ class MainViewModel: ViewModel() {
             return
         dbViewModel.removeBookFromBookBoard(bookBoard.docId!!, book) {
             bookBoardsList.postValue(it)
+            dbViewModel.fetchBooks(bookBoard) {
+                bookListForOneBoardFragment.postValue(it)
+            }
         }
+
     }
     fun getBookBoard(id: String) : BookBoard? {
         return bookBoardsList.value!!.find { it.docId == id }
     }
     fun updateBookBoardPublicStatus(bookBoard: BookBoard) {
         dbViewModel.updateBookBoardPublicStatus(bookBoard)
+    }
+    // ONE BOARD FRAGMENT
+    fun setBooksInOneBoardFragment(books : List<SavedBook>) {
+        bookListForOneBoardFragment.postValue(books)
     }
 
     // PROFILE
@@ -178,9 +192,11 @@ class MainViewModel: ViewModel() {
     fun observeBio() : MutableLiveData<String> {
         return userBio
     }
-
     fun observeDisplayName() : MutableLiveData<String> {
         return displayName
+    }
+    fun observeBooksInOneBoardFragment(): LiveData<List<SavedBook>> {
+        return bookListForOneBoardFragment
     }
 
 }

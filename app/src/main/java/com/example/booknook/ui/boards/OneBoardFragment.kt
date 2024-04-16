@@ -25,6 +25,11 @@ class OneBoardFragment: Fragment() {
             DeleteBookInBoardPopup.newInstance(it, args.bookBoard).show(parentFragmentManager, "DeleteBookInBoardPopup")
         }
         bookBoardAdapter.submitList(args.bookBoard.booksInBoard)
+        viewModel.observeBooksInOneBoardFragment().observe(viewLifecycleOwner) {
+            bookBoardAdapter.submitList(it)
+            val booksText = "${it.size} Books"
+            binding.booksCount.text = booksText
+        }
         binding.recyclerViewBoard.adapter = bookBoardAdapter
         val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.recyclerViewBoard.layoutManager = layoutManager
@@ -46,6 +51,7 @@ class OneBoardFragment: Fragment() {
         binding.bookboardName.text = args.bookBoard.bookBoardTitle
         val booksCountText = "${args.bookBoard.booksInBoard.size} Books"
         binding.booksCount.text = booksCountText
+
 
         if (args.bookBoard.isPublic) {
             binding.publicButton.setImageResource(R.drawable.baseline_lock_open_24)

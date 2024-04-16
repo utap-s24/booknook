@@ -48,7 +48,10 @@ class BookInfoPopup: DialogFragment()  {
             book.imageUrl.let { Glide.glideFetch(it, binding.bookCover) }
             binding.bookTitle.text = book.title
             binding.bookAuthor.text = book.author
-            binding.description.text = book.description
+            if (book.description.isNotEmpty())
+                binding.description.text = book.description
+            else
+                binding.description.visibility = View.GONE
 
             if (book.genres?.isNotEmpty() == true) {
                 binding.genre1.text = book.genres[0]

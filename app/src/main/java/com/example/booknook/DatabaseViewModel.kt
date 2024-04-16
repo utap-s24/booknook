@@ -63,6 +63,28 @@ class DatabaseViewModel {
         limitAndGet(query, resultListener)
     }
 
+    fun fetchBooks(
+        bookBoard: BookBoard,
+        resultListener: (List<SavedBook>)->Unit
+    ) {
+        val docId = bookBoard.docId ?: return
+
+        db.collection(rootCollection)
+            .document(docId)
+            .collection("books")
+            .get()
+            .addOnSuccessListener { result ->
+               val books = result.documents.mapNotNull { book ->
+                   book.toObject(SavedBook::class.java)
+               }
+                resultListener(books)
+                Log.d(javaClass.simpleName, "books fetch SUCCESS")
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "books fetch FAILED ", it)
+            }
+    }
+
     // https://firebase.google.com/docs/firestore/manage-data/add-data#add_a_document
     fun createBookBoard(
 //        sortInfo: SortInfo,

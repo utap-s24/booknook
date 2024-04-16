@@ -30,8 +30,8 @@
         app:layout_constraintStart_toEndOf="@id/BoardTitle"/>
     <ImageView
         android:id="@+id/bookPreview2"
-        android:layout_width="34dp"
-        android:layout_height="52dp"
+        android:layout_width="39dp"
+        android:layout_height="58dp"
         android:layout_margin="7dp"
         android:background="#c4c4c4"
         app:layout_constraintTop_toTopOf="parent"
@@ -39,8 +39,8 @@
         app:layout_constraintStart_toEndOf="@id/bookPreview1"/>
     <ImageView
         android:id="@+id/bookPreview3"
-        android:layout_width="29dp"
-        android:layout_height="46dp"
+        android:layout_width="39dp"
+        android:layout_height="58dp"
         android:layout_margin="7dp"
         android:background="#c4c4c4"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,8 +48,8 @@
         app:layout_constraintStart_toEndOf="@id/bookPreview2"/>
     <ImageView
         android:id="@+id/bookPreview4"
-        android:layout_width="26dp"
-        android:layout_height="40dp"
+        android:layout_width="39dp"
+        android:layout_height="58dp"
         android:layout_margin="7dp"
         android:background="#c4c4c4"
         app:layout_constraintTop_toTopOf="parent"

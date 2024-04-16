@@ -11,10 +11,12 @@ import com.example.booknook.api.Book
 import com.example.booknook.api.GoogleBook
 import com.example.booknook.databinding.BookItemBinding
 import com.example.booknook.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 
 class BookGridAdapter(private val viewModel: MainViewModel,
-                      private val navigateToAddToBookBoardPopup: (Book)->Unit,
-private val navigateToBookInfoPopup: (Book) -> Unit)
+                      private val navigateToAddToBookBoardPopup: (Book) -> Unit,
+                      private val displaySnackbar: (String) -> Unit,
+                      private val navigateToBookInfoPopup: (Book) -> Unit)
     : ListAdapter<Book, BookGridAdapter.VH>(BookDiff()) {
 
     inner class VH(private val bookItemBinding: BookItemBinding) : RecyclerView.ViewHolder(bookItemBinding.root) {
@@ -29,24 +31,23 @@ private val navigateToBookInfoPopup: (Book) -> Unit)
             // setting photo using Glide
             Glide.glideFetch(bookItem.imageUrl, bookItemBinding.bookCover)
             println(bookItem.imageUrl)
-            // setting book title
-            bookItemBinding.BookTitle.text = bookItem.title
+
             // setting bookmarked icon functionality
-            if (viewModel.isSaved(bookItem))
+            if (viewModel.isSaved(bookItem.isbn10, bookItem.isbn13))
                 bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_24)
             else
                 bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_border_24)
 
             bookItemBinding.bookmarkIcon.setOnClickListener {
-                if (!viewModel.isSaved(bookItem)) {
+                if (!viewModel.isSaved(bookItem.isbn10, bookItem.isbn13)) {
                     bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_24)
                     viewModel.addBookToBookmarkedList(bookItem)
                     navigateToAddToBookBoardPopup(bookItem)
                 }
                 else {
                     bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_border_24)
-                    viewModel.removeBookFromBookmarkedList(bookItem)
-                    // XXX need to remove from bookboards
+                    viewModel.removeBookFromBookmarkedList(bookItem.isbn10, bookItem.isbn13)
+                    displaySnackbar(bookItem.title)
                 }
             }
             bookItemBinding.bookCover.setOnClickListener {
