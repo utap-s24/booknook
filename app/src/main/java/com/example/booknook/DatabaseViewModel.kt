@@ -6,6 +6,7 @@ import com.example.booknook.ui.boards.SavedBook
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -15,6 +16,7 @@ class DatabaseViewModel {
     private val db = Firebase.firestore
     private val savedBooksCollection = "Bookmarked Books" // XXX
     private val rootCollection = "bookboards"
+    private val profileCollection = "users"
 
     private fun getUserId(): String? {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -192,6 +194,66 @@ class DatabaseViewModel {
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "BookBoard deleting FAILED")
+            }
+    }
+
+    // PROFILE PERSONAL INFORMATION
+
+    fun saveDisplayName(name : String) {
+        Log.d(javaClass.simpleName, "saving displayName")
+        val userDoc = db.collection(profileCollection).document(getUserId()!!)
+        userDoc.set(hashMapOf("displayName" to name), SetOptions.merge()) // AI CONTRIBUTION
+    }
+
+    // AI CONTRIBUTION
+    fun fetchDisplayName(onSuccess: (String) -> Unit) {
+        val userId = getUserId()
+        val userDocRef = db.collection(profileCollection).document(userId!!)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val displayName = documentSnapshot.getString("displayName")
+                    if (displayName != null) {
+                        onSuccess(displayName)
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
+    fun saveBio(bio : String) {
+        Log.d(javaClass.simpleName, "saving displayName")
+        val userDoc = db.collection(profileCollection).document(getUserId()!!)
+        userDoc.set(hashMapOf("aboutMe" to bio), SetOptions.merge()) // AI CONTRIBUTION
+    }
+
+    // AI CONTRIBUTION
+    fun fetchBio(onSuccess: (String) -> Unit) {
+        val userId = getUserId()
+        val userDocRef = db.collection(profileCollection).document(userId!!)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val bio = documentSnapshot.getString("aboutMe")
+                    if (bio != null) {
+                        onSuccess(bio)
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+            .addOnFailureListener { e ->
+
             }
     }
 }

@@ -36,6 +36,10 @@ class EditProfileFragment : Fragment() {
             binding.username.setText(it)
         }
 
+        viewModel.observeBio().observe(viewLifecycleOwner) {
+            binding.bio.setText(it)
+        }
+
         binding.logoutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
         }
@@ -43,6 +47,7 @@ class EditProfileFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             viewModel.updateBio(binding.bio.text.toString())
             viewModel.updateDisplayName(binding.username.text.toString())
+
             findNavController().navigate(R.id.navigation_profile)
         }
     }

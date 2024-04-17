@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = ""
+    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -51,11 +51,16 @@ class MainViewModel: ViewModel() {
         }
     }
     // FIREBASE
-    fun initUsername() {
+    fun initProfile() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             username.postValue(user.email)
-            displayName.postValue(user.email)
+            dbViewModel.fetchDisplayName{
+                displayName.postValue(it)
+            }
+            dbViewModel.fetchBio {
+                userBio.postValue(it)
+            }
         }
     }
     fun searchGoogleBooks(search : String) {
@@ -165,10 +170,12 @@ class MainViewModel: ViewModel() {
     // PROFILE
 
     fun updateBio(bio : String) {
+        dbViewModel.saveBio(bio)
         userBio.postValue(bio)
     }
 
     fun updateDisplayName(name : String) {
+        dbViewModel.saveDisplayName(name)
         displayName.postValue(name)
     }
 
@@ -187,6 +194,10 @@ class MainViewModel: ViewModel() {
     }
     fun observeUsername() : MutableLiveData<String> {
         return username
+    }
+
+    fun getUsername() : String {
+        return username.value!!
     }
 
     fun observeBio() : MutableLiveData<String> {
