@@ -9,7 +9,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
 
-// https://firebase.google.com/docs/auth/android/firebaseui
+// BASE CODE FROM FC #6 FIREBASE AUTH
 class AuthInit(viewModel: MainViewModel, signInLauncher: ActivityResultLauncher<Intent>) {
 
     init {

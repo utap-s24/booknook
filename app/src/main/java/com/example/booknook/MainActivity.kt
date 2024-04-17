@@ -49,10 +49,10 @@ class MainActivity : AppCompatActivity() {
             if (thisAuth.currentUser == null) {
                 AuthInit(viewModel, signInLauncher)
                 navController.navigate(R.id.navigation_home)
+            } else {
+                viewModel.initProfile()
             }
         }
-
-        viewModel.initUsername()
     }
 
     override fun onSupportNavigateUp(): Boolean {

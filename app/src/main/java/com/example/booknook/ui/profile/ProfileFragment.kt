@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booknook.MainViewModel
 import com.example.booknook.databinding.FragmentProfileBinding
 import com.example.booknook.R
-import com.example.booknook.ui.boards.BoardsFragmentDirections
 import com.example.booknook.ui.boards.BookBoardRowAdapter
 
 class ProfileFragment : Fragment() {
@@ -25,7 +24,7 @@ class ProfileFragment : Fragment() {
 
     private fun initAdapter(binding: FragmentProfileBinding) {
         val bookBoardsAdapter = BookBoardRowAdapter(viewModel) {
-            findNavController().navigate(BoardsFragmentDirections.navigationBoardsToOneBoard(it))
+            //findNavController().navigate(BoardsFragmentDirections.navigationBoardsToOneBoard(it))
         }
 
         viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
@@ -48,7 +47,11 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeDisplayName().observe(viewLifecycleOwner) {
-            binding.username.text = it
+            if (it.isEmpty()) {
+                binding.username.text = viewModel.getUsername()
+            } else {
+                binding.username.text = it
+            }
         }
 
         viewModel.observeBio().observe(viewLifecycleOwner) {
