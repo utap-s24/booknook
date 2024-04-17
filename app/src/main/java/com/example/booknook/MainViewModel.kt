@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
+    private val apiKey = ""
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
