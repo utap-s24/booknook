@@ -67,7 +67,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter(binding)
-        initSwipeLayout(binding.swipeRefreshLayout)
+        // disabling refresh because nyt api content updates weekly so there is nothing
+        // new to refresh and see
+         initSwipeLayout(binding.swipeRefreshLayout)
         binding.SearchBar.setOnClickListener {
             binding.SearchBar.requestFocusFromTouch()
         }
@@ -104,8 +106,7 @@ class HomeFragment : Fragment() {
             swipe.isRefreshing = it == false
         }
         swipe.setOnRefreshListener {
-            viewModel.netRefresh()
-            // XXX NEED TO RESTRICT API CALLS TO 5 PER MINUTE
+            swipe.isRefreshing = false
         }
     }
 

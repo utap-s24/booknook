@@ -3,6 +3,8 @@ package com.example.booknook
 import android.util.Log
 import com.example.booknook.ui.boards.BookBoard
 import com.example.booknook.ui.boards.SavedBook
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -34,20 +36,26 @@ class DatabaseViewModel {
             .addOnSuccessListener { result ->
                 Log.d(javaClass.simpleName, "bookboards fetch ${result!!.documents.size}")
                 // Need to make bookBoards & books in boards a certain format
+                val pendingOperations = mutableListOf<Task<*>>()
+
                 val bookBoardList = result.documents.mapNotNull {
                     it.toObject(BookBoard::class.java)?.apply {
                         this.docId = it.id // ensures they all have a docId
-                        it.reference.collection("books").get()
-                            .addOnSuccessListener { books ->
+                        val booksFetch = it.reference.collection("books").get()
+                        pendingOperations.add(
+                            booksFetch.addOnSuccessListener { books ->
                                 val savedBooksInBoard = books.mapNotNull { book ->
                                     book.toObject(SavedBook::class.java)
                                 }
                                 this.booksInBoard = savedBooksInBoard.toMutableList()
+                                println("books recorded: $booksInBoard")
                             }
-
+                        )
                     }
                 }
-                resultListener(bookBoardList)
+                Tasks.whenAllComplete(pendingOperations).addOnCompleteListener {
+                    resultListener(bookBoardList)
+                }
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "bookboards fetch FAILED ", it)
@@ -132,6 +140,39 @@ class DatabaseViewModel {
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "Book id recording FAILED")
+            }
+    }
+
+    fun addToBookmarkedBooks(
+        book : SavedBook,
+        resultListener: (List<SavedBook>) -> Unit
+    ) {
+        db.collection(savedBooksCollection)
+            .add(book)
+            .addOnSuccessListener {
+                Log.d(javaClass.simpleName, "Book successfully added to Saved Books")
+                fetchSavedBooks(resultListener)
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "Book add FAILED")
+
+            }
+    }
+
+    fun fetchSavedBooks(
+        resultListener: (List<SavedBook>) -> Unit
+    ) {
+        db.collection(savedBooksCollection)
+            .get()
+            .addOnSuccessListener { result ->
+                val books = result.documents.mapNotNull { book ->
+                    book.toObject(SavedBook::class.java)
+                }
+                resultListener(books)
+                Log.d(javaClass.simpleName, "books fetch SUCCESS")
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "books fetch FAILED ", it)
             }
     }
 

@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = ""
+    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -31,18 +31,13 @@ class MainViewModel: ViewModel() {
     private val fetchDone = MutableLiveData(false)
     private var netBooks = MutableLiveData<List<Book>>()
     private var netSearchBooks = MutableLiveData<List<GoogleBook>>()
-    private var booksBookmarked = MutableLiveData<List<Book>>(emptyList())
+    private var booksBookmarked = MutableLiveData<List<SavedBook>>(emptyList())
     private var bookBoardsList = MutableLiveData<List<BookBoard>>(mutableListOf())
     private var bookListForOneBoardFragment = MutableLiveData<List<SavedBook>>()
     private var userBio = MutableLiveData<String>()
     private var displayName = MutableLiveData<String>()
-    init {
-        netRefresh()
-        dbViewModel.fetchBookBoard {
-            bookBoardsList.postValue(it)
-        }
-    }
-    fun netRefresh() {
+
+    private fun netRefresh() {
         fetchDone.postValue(false)
         viewModelScope.launch (context = viewModelScope.coroutineContext
                 + Dispatchers.IO) {
@@ -54,9 +49,13 @@ class MainViewModel: ViewModel() {
     fun initProfile() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
+            netRefresh()
             username.postValue(user.email)
             dbViewModel.fetchDisplayName{
                 displayName.postValue(it)
+            }
+            dbViewModel.fetchBookBoard {
+                bookBoardsList.postValue(it)
             }
             dbViewModel.fetchBio {
                 userBio.postValue(it)
@@ -65,7 +64,7 @@ class MainViewModel: ViewModel() {
     }
     fun searchGoogleBooks(search : String) {
         if (search.isEmpty())
-            netRefresh()
+            netBooks.postValue(netBooks.value)
         else {
             fetchDone.postValue(false)
             viewModelScope.launch(
@@ -113,9 +112,14 @@ class MainViewModel: ViewModel() {
         }
         return false
     }
-    fun addBookToBookmarkedList(book: Book) {
-        booksBookmarked.postValue(booksBookmarked.value?.plus(book))
-    }
+//    fun getSavedBooksAsBoard() : BookBoard {
+//        if (booksBookmarked.value == null) {
+//            return BookBoard("", "", false, "Saved Books", mutableListOf())
+//        }
+//    }
+//    fun addBookToBookmarkedList(book: Book) {
+//        booksBookmarked.postValue(booksBookmarked.value?.plus(book))
+//    }
     fun removeBookFromBookmarkedList(isbn10: String, isbn13: String) {
         val updatedList = booksBookmarked.value!!.filterNot {
             it.isbn10 == isbn10 || it.isbn13 == isbn13

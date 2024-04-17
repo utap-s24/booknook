@@ -5,14 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.boards.BoardsFragment">
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/interactiveButtonSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:orientation="horizontal"
-        >
+        android:gravity="end"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageButton
+            android:id="@+id/savedBooksButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/baseline_bookmark_24"
+            android:scaleType="fitCenter"
+            android:background="@color/fui_transparent"
+            android:layout_margin="10dp"
+            android:contentDescription="saved books"
+            />
         <ImageButton
             android:id="@+id/newBookBoardButton"
             android:layout_width="25dp"
@@ -22,8 +31,8 @@
             android:layout_margin="10dp"
             android:background="@color/fui_transparent"
             android:contentDescription="@string/add_new_bookboard"
-            android:layout_gravity="end"/>
-    </FrameLayout>
+            />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -31,6 +40,7 @@
         android:id="@+id/recyclerViewBoards"
         android:scrollbars="vertical"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/interactiveButtonSection"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
