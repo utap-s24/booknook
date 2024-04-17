@@ -16,15 +16,16 @@ class BookBoardRowAdapter(private val viewModel: MainViewModel,
     inner class VH(private val bookBoardRowBinding: BookBoardRowBinding) : RecyclerView.ViewHolder(bookBoardRowBinding.root) {
         fun bind(bookBoard: BookBoard) {
             bookBoardRowBinding.BoardTitle.text = bookBoard.bookBoardTitle
-            if (bookBoard.booksInBoard.isNotEmpty()) {
+            if (bookBoard.booksInBoard.size > 0) {
                 Glide.glideFetch(
                     bookBoard.booksInBoard[0].imageUrl,
                     bookBoardRowBinding.bookPreview1
                 )
             }
-//            else {
+            else {
+                println("${bookBoard.bookBoardTitle} is empty ${bookBoard.booksInBoard}")
 //                bookBoardRowBinding.bookPreview1.visibility = View.INVISIBLE
-//            }
+            }
             if (bookBoard.booksInBoard.size >= 2) {
                 Glide.glideFetch(
                     bookBoard.booksInBoard[1].imageUrl,
@@ -75,9 +76,18 @@ class BookBoardRowAdapter(private val viewModel: MainViewModel,
         }
         // XXX may need to compare books in board
         override fun areContentsTheSame(oldItem: BookBoard, newItem: BookBoard): Boolean {
+            if (oldItem.booksInBoard.size == newItem.booksInBoard.size && oldItem.booksInBoard.size >= 4) {
+                return oldItem.bookBoardTitle == newItem.bookBoardTitle &&
+                        oldItem.isPublic == newItem.isPublic &&
+                        oldItem.booksInBoard[0].docId == newItem.booksInBoard[0].docId &&
+                        oldItem.booksInBoard[1].docId == newItem.booksInBoard[1].docId &&
+                        oldItem.booksInBoard[2].docId == newItem.booksInBoard[2].docId &&
+                        oldItem.booksInBoard[3].docId == newItem.booksInBoard[3].docId
+            }
             return oldItem.bookBoardTitle == newItem.bookBoardTitle &&
                     oldItem.isPublic == newItem.isPublic &&
-                    oldItem.booksInBoard.isNotEmpty() &&  newItem.booksInBoard.isNotEmpty()
+                    oldItem.booksInBoard.isNotEmpty() &&  newItem.booksInBoard.isNotEmpty() &&
+                    oldItem.booksInBoard.size == newItem.booksInBoard.size
         }
     }
 
