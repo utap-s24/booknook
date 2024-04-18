@@ -91,7 +91,6 @@ class HomeFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Text has changed, newText is the current content of SearchView
                 if (newText.isNullOrEmpty())
                     viewModel.searchGoogleBooks("")
                 return false

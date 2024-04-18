@@ -20,6 +20,9 @@
         <action
             android:id="@+id/navigation_boards_to_oneBoard"
             app:destination="@id/navigation_one_board" />
+        <action
+            android:id="@+id/navigation_boards_to_bookmarkedBoard"
+            app:destination="@id/navigation_bookmarked_board" />
     </fragment>
 
     <fragment
@@ -31,6 +34,14 @@
             android:name="BookBoard" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_bookmarked_board"
+        android:name="com.example.booknook.ui.boards.BookmarkedBoardFragment"
+        android:label="Bookmarked Board"
+        tools:layout="@layout/one_board_fragment" >
+        <argument app:argType="com.example.booknook.ui.boards.BookBoard"
+            android:name="BookBoard" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"

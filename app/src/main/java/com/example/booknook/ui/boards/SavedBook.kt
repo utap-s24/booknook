@@ -5,6 +5,8 @@ import java.io.Serializable
 
 data class SavedBook(
     var docId: String? = null,
+    @PropertyName("userId")
+    var userId: String = "",
     @PropertyName("title")
     val title: String = "",
     @PropertyName("authors")

@@ -12,6 +12,7 @@ import com.example.booknook.databinding.FragmentAddToBookboardBinding
 import com.example.booknook.glide.Glide
 import com.example.booknook.ui.boards.SavedBook
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.auth.FirebaseAuth
 
 class AddToBookBoardFragment : BottomSheetDialogFragment()  {
     private val viewModel: MainViewModel by activityViewModels()
@@ -35,7 +36,10 @@ class AddToBookBoardFragment : BottomSheetDialogFragment()  {
 //           it.booksInBoard.add(book)
             // CALL VIEWMODEL ADD_TO_BOOKBOARD_DATABASE AND HAVE IT RETURN NEW ID
             // PASS ID TO IT.BOOKSINBOARD.ADD(SAVEDBOOK(ID, ...)
-            viewModel.addBookToBookBoard(it, SavedBook("", book.title, listOf(book.author), book.imageUrl, book.isbn10, book.isbn13))
+            val savedBook =  FirebaseAuth.getInstance().currentUser?.uid?.let { uid -> SavedBook("", uid, book.title, listOf(book.author), book.imageUrl, book.isbn10, book.isbn13) }
+            if (savedBook != null) {
+                viewModel.addBookToBookBoard(it, savedBook)
+            }
         }
         viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
             bookBoardsListAdapter.submitList(it)
