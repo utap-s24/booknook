@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
+    private val apiKey = ""
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -50,6 +50,9 @@ class MainViewModel: ViewModel() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             netRefresh()
+            dbViewModel.fetchSavedBooks {
+                booksBookmarked.postValue(it)
+            }
             username.postValue(user.email)
             dbViewModel.fetchDisplayName{
                 displayName.postValue(it)
@@ -112,19 +115,31 @@ class MainViewModel: ViewModel() {
         }
         return false
     }
-//    fun getSavedBooksAsBoard() : BookBoard {
-//        if (booksBookmarked.value == null) {
-//            return BookBoard("", "", false, "Saved Books", mutableListOf())
-//        }
-//    }
-//    fun addBookToBookmarkedList(book: Book) {
-//        booksBookmarked.postValue(booksBookmarked.value?.plus(book))
-//    }
-    fun removeBookFromBookmarkedList(isbn10: String, isbn13: String) {
-        val updatedList = booksBookmarked.value!!.filterNot {
-            it.isbn10 == isbn10 || it.isbn13 == isbn13
+
+    fun getSavedBooksAsBoard() : BookBoard {
+        val books = mutableListOf<SavedBook>()
+        booksBookmarked.value?.map { book ->
+            books.add(book)
         }
-        booksBookmarked.postValue(updatedList)
+        return BookBoard("", "", false, "Bookmarked", books)
+    }
+    fun addBookToBookmarkedList(book: Book) {
+        val authors = book.author.split(',')
+        val savedBook =  FirebaseAuth.getInstance().currentUser?.uid?.let {SavedBook("", it, book.title, authors, book.imageUrl, book.isbn10, book.isbn13) }
+            ?: return
+        dbViewModel.addToBookmarkedBooks(savedBook) {
+            booksBookmarked.postValue(it)
+        }
+    }
+    fun removeBookFromBookmarkedList(bookReg : Book) {
+        val savedBook = booksBookmarked.value?.find {
+            bookReg.isbn10 == it.isbn10 &&
+            bookReg.isbn13 == it.isbn13 }
+        if (savedBook != null) {
+            dbViewModel.removeFromBookmarkedBooks(savedBook) {
+                booksBookmarked.postValue(it)
+            }
+        }
     }
     // BOOK BOARDS
     fun createBookBoard(title : String, public : Boolean) {
@@ -150,8 +165,12 @@ class MainViewModel: ViewModel() {
         }
     }
     fun deleteBookFromBookBoard(bookBoard: BookBoard, book : SavedBook) {
-        if (bookBoard.docId == null)
+        if (bookBoard.docId.isNullOrEmpty()) {
+            dbViewModel.removeFromBookmarkedBooks(book) {
+                booksBookmarked.postValue(it)
+            }
             return
+        }
         dbViewModel.removeBookFromBookBoard(bookBoard.docId!!, book) {
             bookBoardsList.postValue(it)
             dbViewModel.fetchBooks(bookBoard) {
@@ -170,9 +189,11 @@ class MainViewModel: ViewModel() {
     fun setBooksInOneBoardFragment(books : List<SavedBook>) {
         bookListForOneBoardFragment.postValue(books)
     }
+    fun setSavedBooksInOneBoardFragment() {
+        bookListForOneBoardFragment.postValue(booksBookmarked.value)
+    }
 
     // PROFILE
-
     fun updateBio(bio : String) {
         dbViewModel.saveBio(bio)
         userBio.postValue(bio)
@@ -212,6 +233,9 @@ class MainViewModel: ViewModel() {
     }
     fun observeBooksInOneBoardFragment(): LiveData<List<SavedBook>> {
         return bookListForOneBoardFragment
+    }
+    fun observeBooksBookmarked() : LiveData<List<SavedBook>> {
+        return booksBookmarked
     }
 
 }

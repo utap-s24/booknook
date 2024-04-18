@@ -41,12 +41,12 @@ class BookGridAdapter(private val viewModel: MainViewModel,
             bookItemBinding.bookmarkIcon.setOnClickListener {
                 if (!viewModel.isSaved(bookItem.isbn10, bookItem.isbn13)) {
                     bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_24)
-//                    viewModel.addBookToBookmarkedList(bookItem)
+                    viewModel.addBookToBookmarkedList(bookItem)
                     navigateToAddToBookBoardPopup(bookItem)
                 }
                 else {
                     bookItemBinding.bookmarkIcon.setImageResource(R.drawable.baseline_bookmark_border_24)
-                    viewModel.removeBookFromBookmarkedList(bookItem.isbn10, bookItem.isbn13)
+                    viewModel.removeBookFromBookmarkedList(bookItem)
                     displaySnackbar(bookItem.title)
                 }
             }

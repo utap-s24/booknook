@@ -49,9 +49,10 @@ class BoardsFragment : Fragment() {
             val createBookBoardPopup = CreateBookBoardPopup()
             createBookBoardPopup.show(parentFragmentManager, "CreateBookBoardPopup")
         }
-//        binding.savedBooksButton.setOnClickListener {
-//            findNavController().navigate(BoardsFragmentDirections.navigationBoardsToOneBoard(viewModel.getSavedBooksAsBoard()))
-//        }
+        binding.savedBooksButton.setOnClickListener {
+            viewModel.setSavedBooksInOneBoardFragment()
+            findNavController().navigate(BoardsFragmentDirections.navigationBoardsToBookmarkedBoard(viewModel.getSavedBooksAsBoard()))
+        }
     }
 
     override fun onDestroyView() {

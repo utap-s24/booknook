@@ -66,7 +66,6 @@ class DatabaseViewModel {
     // Interact with Firestore db
     // https://firebase.google.com/docs/firestore/query-data/order-limit-data
     fun fetchBookBoard(
-//        sortInfo: SortInfo,
         resultListener: (List<BookBoard>) -> Unit
     ) {
         val query = db.collection(rootCollection)
@@ -97,7 +96,6 @@ class DatabaseViewModel {
 
     // https://firebase.google.com/docs/firestore/manage-data/add-data#add_a_document
     fun createBookBoard(
-//        sortInfo: SortInfo,
         bookBoard: BookBoard,
         resultListener: (List<BookBoard>)->Unit
     ) {
@@ -143,6 +141,22 @@ class DatabaseViewModel {
             }
     }
 
+    private fun attachDocIdToSavedBook(
+        bookDocReference : DocumentReference,
+        resultListener: (List<SavedBook>) -> Unit
+    ) {
+        db.collection(savedBooksCollection)
+            .document(bookDocReference.id)
+            .update("docId", bookDocReference.id)
+            .addOnSuccessListener {
+                Log.d(javaClass.simpleName, "Saved Book id recorded SUCCESSFULLY")
+                fetchSavedBooks(resultListener)
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "Saved Book id recording FAILED")
+            }
+    }
+
     fun addToBookmarkedBooks(
         book : SavedBook,
         resultListener: (List<SavedBook>) -> Unit
@@ -151,7 +165,8 @@ class DatabaseViewModel {
             .add(book)
             .addOnSuccessListener {
                 Log.d(javaClass.simpleName, "Book successfully added to Saved Books")
-                fetchSavedBooks(resultListener)
+                attachDocIdToSavedBook(it, resultListener)
+
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "Book add FAILED")
@@ -159,15 +174,41 @@ class DatabaseViewModel {
             }
     }
 
+    fun removeFromBookmarkedBooks(
+        book: SavedBook,
+        resultListener: (List<SavedBook>) -> Unit
+    ) {
+        val bookDocId = book.docId
+        if (bookDocId.isNullOrEmpty()) {
+            Log.d(javaClass.simpleName, "Invalid or missing book document ID")
+            return
+        }
+        Log.d(javaClass.simpleName, "Attempting to delete document with ID: $bookDocId")
+        db.collection(savedBooksCollection)
+            .document(bookDocId)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(javaClass.simpleName, "Book successfully removed from Saved Books")
+                fetchSavedBooks(resultListener)
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "Book remove FAILED")
+
+            }
+    }
+
     fun fetchSavedBooks(
         resultListener: (List<SavedBook>) -> Unit
     ) {
+        val userId = getUserId()
         db.collection(savedBooksCollection)
+            .whereEqualTo("userId", userId)
             .get()
             .addOnSuccessListener { result ->
                 val books = result.documents.mapNotNull { book ->
                     book.toObject(SavedBook::class.java)
                 }
+                println(books)
                 resultListener(books)
                 Log.d(javaClass.simpleName, "books fetch SUCCESS")
             }
