@@ -10,7 +10,7 @@ class GoogleBooksRepository(private val googleBooksAPI: GoogleBooksAPI) {
         return books
     }
     suspend fun getBooksFromSearch(search: String): List<GoogleBook> {
-        val response = googleBooksAPI.getBooksFromSearch(search)
+        val response = googleBooksAPI.getBooksFromSearch(search, 40)
         return unpackBookResultsData(response)
     }
 }

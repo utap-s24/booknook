@@ -121,7 +121,7 @@ class MainViewModel: ViewModel() {
         booksBookmarked.value?.map { book ->
             books.add(book)
         }
-        return BookBoard("", "", false, "Bookmarked", books)
+        return BookBoard("", "", false, "Bookmarks", books)
     }
     fun addBookToBookmarkedList(book: Book) {
         val authors = book.author.split(',')

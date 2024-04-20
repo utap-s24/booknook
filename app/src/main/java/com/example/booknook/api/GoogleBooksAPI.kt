@@ -11,7 +11,8 @@ import java.io.Serializable
 
 interface GoogleBooksAPI {
     @GET("books/v1/volumes")
-    suspend fun getBooksFromSearch(@Query("q") search: String): GoogleBooksAPIResponse
+    suspend fun getBooksFromSearch(@Query("q") search: String, @Query("maxResults") maxResults: Int):
+            GoogleBooksAPIResponse
 
     data class GoogleBooksAPIResponse (
         @SerializedName("totalItems")

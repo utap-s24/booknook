@@ -27,8 +27,10 @@ class ProfileFragment : Fragment() {
             //findNavController().navigate(BoardsFragmentDirections.navigationBoardsToOneBoard(it))
         }
 
-        viewModel.observeBookBoardsList().observe(viewLifecycleOwner) {
-            bookBoardsAdapter.submitList(it)
+        viewModel.observeBookBoardsList().observe(viewLifecycleOwner) { bookBoards ->
+            // only submitting public BookBoards
+            val publicBookBoards = bookBoards.filter { book -> book.isPublic }
+            bookBoardsAdapter.submitList(publicBookBoards)
         }
         binding.recyclerViewBoards.adapter = bookBoardsAdapter
         binding.recyclerViewBoards.layoutManager = LinearLayoutManager(activity)

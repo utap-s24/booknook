@@ -6,22 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
+    <TextView
+        android:id="@+id/text_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="My Profile"
+        android:layout_gravity="center"
+        android:fontFamily="@font/dm_serif_display_regular"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Edit Profile"
+        android:src="@drawable/baseline_edit_24"
+        android:background="@color/fui_transparent"
+        android:textSize="20sp"
+        android:layout_gravity="end"
+        android:contentDescription="edit button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
     <LinearLayout
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="My Profile"
-            android:fontFamily="@font/dm_serif_display_regular"
-            android:textAlignment="center"
-            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/profile_picture"
@@ -45,8 +64,9 @@
         <TextView
             android:id="@+id/bio"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:layout_margin="8dp"
+            android:textSize="15sp"
             android:padding="8dp"
             android:text="About me..."
             android:gravity="top"
@@ -63,22 +83,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:id="@+id/recyclerViewBoards"
             android:scrollbars="vertical"
             />
-
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Edit Profile"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:layout_gravity="center"/>
 
     </LinearLayout>
 

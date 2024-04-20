@@ -22,19 +22,13 @@ class BookBoardRowAdapter(private val viewModel: MainViewModel,
                     bookBoardRowBinding.bookPreview1
                 )
             }
-            else {
-                println("${bookBoard.bookBoardTitle} is empty ${bookBoard.booksInBoard}")
-//                bookBoardRowBinding.bookPreview1.visibility = View.INVISIBLE
-            }
+
             if (bookBoard.booksInBoard.size >= 2) {
                 Glide.glideFetch(
                     bookBoard.booksInBoard[1].imageUrl,
                     bookBoardRowBinding.bookPreview2
                 )
             }
-//            else {
-//                bookBoardRowBinding.bookPreview2.visibility = View.INVISIBLE
-//            }
 
             if (bookBoard.booksInBoard.size >= 3) {
                 Glide.glideFetch(
@@ -42,18 +36,13 @@ class BookBoardRowAdapter(private val viewModel: MainViewModel,
                     bookBoardRowBinding.bookPreview3
                 )
             }
-//            else {
-//                bookBoardRowBinding.bookPreview3.visibility = View.INVISIBLE
-//            }
+
             if (bookBoard.booksInBoard.size >= 4) {
                 Glide.glideFetch(
                     bookBoard.booksInBoard[3].imageUrl,
                     bookBoardRowBinding.bookPreview4
                 )
             }
-//            else {
-//                bookBoardRowBinding.bookPreview4.visibility = View.INVISIBLE
-//            }
 
             bookBoardRowBinding.root.setOnClickListener {
                 viewModel.setBooksInOneBoardFragment(bookBoard.booksInBoard)
