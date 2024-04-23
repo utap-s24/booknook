@@ -13,9 +13,8 @@ import com.example.booknook.api.GoogleBooksRepository
 import com.example.booknook.api.NewYorkTimesAPI
 import com.example.booknook.ui.boards.BookBoard
 import com.example.booknook.ui.boards.SavedBook
-import com.google.firebase.Firebase
+import com.example.booknook.ui.profile.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -36,6 +35,10 @@ class MainViewModel: ViewModel() {
     private var bookListForOneBoardFragment = MutableLiveData<List<SavedBook>>()
     private var userBio = MutableLiveData<String>()
     private var displayName = MutableLiveData<String>()
+    private var allUsers = MutableLiveData<List<User>>()
+    private var userMatches = MutableLiveData<List<User>>()
+    private var friendsList = MutableLiveData<List<User>>(mutableListOf())
+    private var userPreview = MutableLiveData<List<String>>()
 
     private fun netRefresh() {
         fetchDone.postValue(false)
@@ -53,6 +56,7 @@ class MainViewModel: ViewModel() {
             dbViewModel.fetchSavedBooks {
                 booksBookmarked.postValue(it)
             }
+            dbViewModel.saveUsername(user.email!!)
             username.postValue(user.email)
             dbViewModel.fetchDisplayName{
                 displayName.postValue(it)
@@ -63,8 +67,20 @@ class MainViewModel: ViewModel() {
             dbViewModel.fetchBio {
                 userBio.postValue(it)
             }
+            dbViewModel.fetchFriendsList {
+                Log.d("fetchfriends", it.toString())
+                friendsList.postValue(it)
+            }
         }
     }
+
+    fun fetchAllUsers() {
+        dbViewModel.getAllUsernames {
+            allUsers.postValue(it)
+            userMatches.postValue(it)
+        }
+    }
+
     fun searchGoogleBooks(search : String) {
         if (search.isEmpty())
             netBooks.postValue(netBooks.value)
@@ -204,6 +220,11 @@ class MainViewModel: ViewModel() {
         displayName.postValue(name)
     }
 
+    fun updateUsername(user : String) {
+        dbViewModel.saveUsername(user)
+        username.postValue(user)
+    }
+
     // OBSERVE
     fun observeNetBooks() : LiveData<List<Book>> {
         return netBooks
@@ -217,6 +238,7 @@ class MainViewModel: ViewModel() {
     fun observeBookBoardsList() : LiveData<List<BookBoard>> {
         return bookBoardsList
     }
+
     fun observeUsername() : MutableLiveData<String> {
         return username
     }
@@ -231,6 +253,51 @@ class MainViewModel: ViewModel() {
     fun observeDisplayName() : MutableLiveData<String> {
         return displayName
     }
+
+    fun observeUserMatches() : MutableLiveData<List<User>> {
+        return userMatches
+    }
+
+    fun updateUserMatches(matches : List<User>) {
+        userMatches.postValue(matches)
+    }
+
+    fun observeFriendsList() : MutableLiveData<List<User>> {
+        return friendsList
+    }
+
+    fun updateFriendsList(friend : User) {
+        var friends = friendsList.value!!.toMutableList()
+        if (isFriend(friend)) {
+            friends.remove(friend)
+        } else {
+            friends.add(friend)
+        }
+        dbViewModel.saveFriendsList(friends)
+        friendsList.postValue(friends)
+    }
+
+    fun getFriends() : List<User> {
+        return friendsList.value!!
+    }
+
+    fun isFriend(user : User) : Boolean {
+        return friendsList.value!!.contains(user)
+    }
+
+    fun getUserPreview(userId: String) {
+        dbViewModel.fetchUserPreview(userId) {
+            userPreview.postValue(it)
+        }
+    }
+
+    fun observeUserPreview() : MutableLiveData<List<String>> {
+        return userPreview
+    }
+    fun getAllUsers() : List<User> {
+        return allUsers.value!!
+    }
+
     fun observeBooksInOneBoardFragment(): LiveData<List<SavedBook>> {
         return bookListForOneBoardFragment
     }

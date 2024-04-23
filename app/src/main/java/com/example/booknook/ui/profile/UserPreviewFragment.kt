@@ -9,20 +9,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booknook.MainViewModel
-import com.example.booknook.databinding.FragmentProfileBinding
 import com.example.booknook.R
+import com.example.booknook.databinding.FragmentUserPreviewBinding
 import com.example.booknook.ui.boards.BookBoardRowAdapter
 
-class ProfileFragment : Fragment() {
+class UserPreviewFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentUserPreviewBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private fun initAdapter(binding: FragmentProfileBinding) {
+    private fun initAdapter(binding: FragmentUserPreviewBinding) {
         val bookBoardsAdapter = BookBoardRowAdapter(viewModel) {
             //findNavController().navigate(BoardsFragmentDirections.navigationBoardsToOneBoard(it))
         }
@@ -41,41 +41,20 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        return  binding.root
+        _binding = FragmentUserPreviewBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.observeDisplayName().observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
-                binding.username.text = viewModel.getUsername()
+        viewModel.observeUserPreview().observe(viewLifecycleOwner) {
+            if (it[1].isEmpty()) {
+                binding.username.text = it[0]
             } else {
-                binding.username.text = it
+                binding.username.text = it[1]
             }
-        }
-
-        viewModel.observeFriendsList().observe(viewLifecycleOwner) {
-            binding.friends.text = it.size.toString() + " following"
-        }
-
-        viewModel.observeBio().observe(viewLifecycleOwner) {
-            binding.bio.text = it
-        }
-        binding.editButton.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.navigation_edit_profile)
-        }
-
-        binding.addUsers.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.navigation_profile_to_search)
-        }
-
-        binding.friends.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.navigation_profile_to_friends)
+            binding.bio.text = it[2]
         }
 
         initAdapter(binding)

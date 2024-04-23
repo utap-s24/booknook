@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.profile.UserPreviewFragment">
 
     <TextView
         android:id="@+id/text_profile"
@@ -13,27 +13,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="My Profile"
+        android:text="Guest Profile"
         android:layout_gravity="center"
         android:fontFamily="@font/dm_serif_display_regular"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <ImageButton
-        android:id="@+id/editButton"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Edit Profile"
-        android:src="@drawable/baseline_edit_24"
-        android:background="@color/fui_transparent"
-        android:textSize="20sp"
-        android:layout_gravity="end"
-        android:contentDescription="edit button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -101,12 +85,6 @@
             android:id="@+id/recyclerViewBoards"
             android:scrollbars="vertical"
             />
-
-        <Button
-            android:id="@+id/addUsers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Friends" />
 
     </LinearLayout>
 

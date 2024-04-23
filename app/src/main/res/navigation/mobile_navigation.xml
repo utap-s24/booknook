@@ -51,6 +51,22 @@
         <action
             android:id="@+id/navigation_profile_to_edit"
             app:destination="@+id/navigation_edit_profile"/>
+        <action
+            android:id="@+id/navigation_profile_to_search"
+            app:destination="@id/navigation_search_users" />
+        <action
+            android:id="@+id/navigation_profile_to_friends"
+            app:destination="@+id/navigation_friends_list" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_friends_list"
+        android:name="com.example.booknook.ui.profile.FriendsListFragment"
+        android:label="Following List"
+        tools:layout="@layout/fragment_search_users" >
+        <action
+            android:id="@+id/navigation_friends_to_preview"
+            app:destination="@id/navigation_user_preview" />
     </fragment>
 
     <fragment
@@ -58,5 +74,23 @@
         android:name="com.example.booknook.ui.profile.EditProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile"/>
+
+    <fragment
+        android:id="@+id/navigation_search_users"
+        android:name="com.example.booknook.ui.profile.SearchProfileFragment"
+        android:label="Search Users"
+        tools:layout="@layout/fragment_search_users" >
+
+        <action
+            android:id="@+id/navigation_search_to_preview"
+            app:destination="@id/navigation_user_preview" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_user_preview"
+        android:name="com.example.booknook.ui.profile.UserPreviewFragment"
+        android:label="User Preview"
+        tools:layout="@layout/fragment_user_preview" />
 
 </navigation>

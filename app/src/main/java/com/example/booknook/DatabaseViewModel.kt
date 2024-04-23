@@ -3,12 +3,14 @@ package com.example.booknook
 import android.util.Log
 import com.example.booknook.ui.boards.BookBoard
 import com.example.booknook.ui.boards.SavedBook
+import com.example.booknook.ui.profile.User
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.getField
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -338,4 +340,106 @@ class DatabaseViewModel {
 
             }
     }
+
+    fun saveUsername(username : String) {
+        Log.d(javaClass.simpleName, "saving displayName")
+        val userDoc = db.collection(profileCollection).document(getUserId()!!)
+        userDoc.set(hashMapOf("username" to username), SetOptions.merge()) // AI CONTRIBUTION
+    }
+
+    // AI CONTRIBUTION
+    fun fetchUsername(onSuccess: (String) -> Unit) {
+        val userId = getUserId()
+        val userDocRef = db.collection(profileCollection).document(userId!!)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val user = documentSnapshot.getString("username")
+                    if (user != null) {
+                        onSuccess(user)
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
+    // AI CONTRIBUTION
+    fun getAllUsernames(onSuccess: (List<User>) -> Unit) {
+        db.collection(profileCollection)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val users = mutableListOf<User>()
+                for (document in querySnapshot.documents) {
+                    val username = document.getString("username")
+                    val displayName = document.getString("displayName")
+                    if (username != null && displayName != null) {
+                        users.add(User(username, displayName))
+                    }
+                }
+                Log.d("fetchAllUsers", users.toString())
+                onSuccess(users)
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
+    fun saveFriendsList(friends : List<User>) {
+        val userDoc = db.collection(profileCollection).document(getUserId()!!)
+        userDoc.set(hashMapOf("friendsList" to friends), SetOptions.merge()) // AI CONTRIBUTION
+
+    }
+
+    fun fetchFriendsList(onSuccess: (List<User>) -> Unit) {
+        val userId = getUserId()
+        val userDocRef = db.collection(profileCollection).document(userId!!)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val friendsList = documentSnapshot["friendsList"] as? List<Map<String, String>>
+                    val friendsAsUsers = mutableListOf<User>()
+                    if (friendsList != null) {
+                        for (friend in friendsList) {
+                            friendsAsUsers.add(User(friend.get("username")!!, friend.get("displayName")!!))
+                        }
+                        onSuccess(friendsAsUsers)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
+    fun fetchUserPreview(userId: String, onSuccess: (List<String>) -> Unit) {
+        val userDocRef = db.collection(profileCollection).document(userId)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val username = documentSnapshot.getString(("username"))
+                    val displayName = documentSnapshot.getString("displayName")
+                    val bio = documentSnapshot.getString("aboutMe")
+                    val userInfo = mutableListOf<String>()
+                    userInfo.add(username!!)
+                    userInfo.add(displayName!!)
+                    userInfo.add(bio!!)
+                    onSuccess(userInfo)
+                } else {
+
+                }
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
 }

@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity() {
                 viewModel.initProfile()
             }
         }
+
+        viewModel.fetchAllUsers()
     }
 
     override fun onSupportNavigateUp(): Boolean {
