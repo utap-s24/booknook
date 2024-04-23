@@ -64,6 +64,7 @@ class DatabaseViewModel {
                 resultListener(listOf())
             }
     }
+    
     /////////////////////////////////////////////////////////////
     // Interact with Firestore db
     // https://firebase.google.com/docs/firestore/query-data/order-limit-data

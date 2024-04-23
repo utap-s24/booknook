@@ -21,21 +21,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+
     <ImageButton
         android:id="@+id/editButton"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:scaleType="fitCenter"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Edit Profile"
         android:src="@drawable/baseline_edit_24"
         android:background="@color/fui_transparent"
-        android:textSize="20sp"
         android:layout_gravity="end"
         android:contentDescription="edit button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/addUsers"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/baseline_group_add_24"
+        android:layout_gravity="end"
+        android:background="@color/fui_transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/editButton"
+        android:contentDescription="add users button"
+        android:text="Add Friends" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,7 +93,7 @@
         <TextView
             android:id="@+id/bio"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_margin="8dp"
             android:textSize="15sp"
             android:padding="8dp"
@@ -101,13 +117,6 @@
             android:id="@+id/recyclerViewBoards"
             android:scrollbars="vertical"
             />
-
-        <Button
-            android:id="@+id/addUsers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Friends" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
