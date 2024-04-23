@@ -67,14 +67,13 @@
             android:layout_height="120dp"
             android:src="@drawable/baseline_person_24"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"/>
+            android:layout_margin="12dp"/>
 
         <TextView
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Bad user"
             android:fontFamily="@font/dm_serif_display_regular"
@@ -93,17 +92,22 @@
             android:textAlignment="center"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/bio"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="8dp"
-            android:textSize="15sp"
-            android:padding="8dp"
-            android:text="About me..."
-            android:gravity="top"
-            />
-
+        <ScrollView
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            >
+            <TextView
+                android:id="@+id/bio"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:textSize="15sp"
+                android:padding="8dp"
+                android:text="About me..."
+                android:gravity="top"
+                />
+        </ScrollView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
