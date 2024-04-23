@@ -379,8 +379,9 @@ class DatabaseViewModel {
                 for (document in querySnapshot.documents) {
                     val username = document.getString("username")
                     val displayName = document.getString("displayName")
+                    val bio = "" + document.getString("aboutMe")
                     if (username != null && displayName != null) {
-                        users.add(User(username, displayName))
+                        users.add(User(username, displayName, bio))
                     }
                 }
                 Log.d("fetchAllUsers", users.toString())
@@ -408,7 +409,7 @@ class DatabaseViewModel {
                     val friendsAsUsers = mutableListOf<User>()
                     if (friendsList != null) {
                         for (friend in friendsList) {
-                            friendsAsUsers.add(User(friend.get("username")!!, friend.get("displayName")!!))
+                            friendsAsUsers.add(User(friend.get("username")!!, friend.get("displayName")!!, friend.get("bio")!!))
                         }
                         onSuccess(friendsAsUsers)
                     }

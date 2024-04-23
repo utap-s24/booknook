@@ -11,7 +11,8 @@ import com.example.booknook.MainViewModel
 import com.example.booknook.R
 
 class SearchUserRowAdapter(private val viewModel: MainViewModel,
-                           private var userList: List<User>) : RecyclerView.Adapter<SearchUserRowAdapter.UserViewHolder>() {
+                           private var userList: List<User>,
+    private val navigateToPreview : (User) -> Unit) : RecyclerView.Adapter<SearchUserRowAdapter.UserViewHolder>() {
 
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.usernameTextView)
@@ -44,7 +45,7 @@ class SearchUserRowAdapter(private val viewModel: MainViewModel,
         }
 
         holder.usernameTextView.setOnClickListener {
-
+            navigateToPreview(currentUser)
         }
     }
 

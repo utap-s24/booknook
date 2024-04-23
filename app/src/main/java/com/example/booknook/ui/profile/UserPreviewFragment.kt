@@ -7,16 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booknook.MainViewModel
 import com.example.booknook.R
 import com.example.booknook.databinding.FragmentUserPreviewBinding
 import com.example.booknook.ui.boards.BookBoardRowAdapter
 
-class UserPreviewFragment : Fragment() {
+class UserPreviewFragment : Fragment(R.layout.fragment_user_preview) {
 
     private val viewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentUserPreviewBinding? = null
+    private val args : UserPreviewFragmentArgs by navArgs()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -49,13 +51,14 @@ class UserPreviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeUserPreview().observe(viewLifecycleOwner) {
-            if (it[1].isEmpty()) {
-                binding.username.text = it[0]
-            } else {
-                binding.username.text = it[1]
-            }
-            binding.bio.text = it[2]
+
         }
+        if (args.user.displayName.isEmpty()) {
+            binding.username.text = args.user.username
+        } else {
+            binding.username.text = args.user.displayName
+        }
+        binding.bio.text = args.user.aboutMe
 
         initAdapter(binding)
     }

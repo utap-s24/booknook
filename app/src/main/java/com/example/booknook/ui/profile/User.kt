@@ -9,5 +9,5 @@ data class User(
     @PropertyName("displayName")
     var displayName: String = "",
     @PropertyName("aboutMe")
-    var bio: String = ""
+    var aboutMe: String = ""
     ) : Serializable

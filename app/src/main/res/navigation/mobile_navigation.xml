@@ -91,6 +91,9 @@
         android:id="@+id/navigation_user_preview"
         android:name="com.example.booknook.ui.profile.UserPreviewFragment"
         android:label="User Preview"
-        tools:layout="@layout/fragment_user_preview" />
+        tools:layout="@layout/fragment_user_preview" >
+        <argument app:argType="com.example.booknook.ui.profile.User"
+            android:name="user" />
+    </fragment>
 
 </navigation>

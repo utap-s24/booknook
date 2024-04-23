@@ -22,7 +22,10 @@ class SearchProfileFragment : Fragment() {
     private var _binding: FragmentSearchUsersBinding? = null
 
     private fun initAdapter(binding: FragmentSearchUsersBinding) {
-        val adapter = SearchUserRowAdapter(viewModel, viewModel.getAllUsers())
+        val adapter = SearchUserRowAdapter(viewModel, viewModel.getAllUsers()) {
+            val action = SearchProfileFragmentDirections.navigationSearchToPreview(it)
+            findNavController().navigate(action)
+        }
         binding.searchedUsers.adapter = adapter
         binding.searchedUsers.layoutManager = LinearLayoutManager(activity)
         val itemDecor = DividerItemDecoration(binding.searchedUsers.context, LinearLayoutManager.VERTICAL)
