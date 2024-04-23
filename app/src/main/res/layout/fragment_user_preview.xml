@@ -16,6 +16,7 @@
         android:text="Guest Profile"
         android:layout_gravity="center"
         android:fontFamily="@font/dm_serif_display_regular"
+        android:textColor="@color/dark_magenta"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,19 +45,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Bad user"
+            android:fontFamily="@font/dm_serif_display_regular"
             android:textAlignment="center"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/friends"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="0 following"
-            android:textAlignment="center"
-            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/bio"
@@ -76,6 +68,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="My Bookboards"
+            android:fontFamily="@font/dm_serif_display_regular"
+            android:textColor="@color/dark_magenta"
             android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView

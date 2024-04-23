@@ -50,14 +50,14 @@ class UserPreviewFragment : Fragment(R.layout.fragment_user_preview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.observeUserPreview().observe(viewLifecycleOwner) {
-
-        }
         if (args.user.displayName.isEmpty()) {
             binding.username.text = args.user.username
+            binding.textProfile.text = args.user.username + "'s Profile"
         } else {
             binding.username.text = args.user.displayName
+            binding.textProfile.text = args.user.displayName + "'s Profile"
         }
+
         binding.bio.text = args.user.aboutMe
 
         initAdapter(binding)

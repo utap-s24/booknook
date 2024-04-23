@@ -415,7 +415,7 @@ class DatabaseViewModel {
                     val username = document.getString("username")
                     val displayName = document.getString("displayName")
                     val bio = "" + document.getString("aboutMe")
-                    if (username != null && displayName != null) {
+                    if (username != null && displayName != null && !userId.equals(getUserId())) {
                         users.add(User(userId, username, displayName, bio))
                     }
                 }

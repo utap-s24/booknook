@@ -51,10 +51,10 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.navigation_home)
             } else {
                 viewModel.initProfile()
+                viewModel.fetchAllUsers()
             }
         }
 
-        viewModel.fetchAllUsers()
     }
 
     override fun onSupportNavigateUp(): Boolean {
