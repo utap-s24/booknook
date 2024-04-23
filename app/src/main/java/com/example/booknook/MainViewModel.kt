@@ -32,6 +32,7 @@ class MainViewModel: ViewModel() {
     private var netSearchBooks = MutableLiveData<List<GoogleBook>>()
     private var booksBookmarked = MutableLiveData<List<SavedBook>>(emptyList())
     private var bookBoardsList = MutableLiveData<List<BookBoard>>(mutableListOf())
+    private var currentFriendBookBoards =  MutableLiveData<List<BookBoard>>(mutableListOf())
     private var bookListForOneBoardFragment = MutableLiveData<List<SavedBook>>()
     private var userBio = MutableLiveData<String>()
     private var displayName = MutableLiveData<String>()
@@ -78,6 +79,15 @@ class MainViewModel: ViewModel() {
         dbViewModel.getAllUsernames {
             allUsers.postValue(it)
             userMatches.postValue(it)
+        }
+    }
+
+    fun fetchFriendBookBoards(friend : User) {
+        if (friend.userId.isEmpty()) {
+            return
+        }
+        dbViewModel.fetchFriendBookboards(friend.userId) {
+            currentFriendBookBoards.postValue(it)
         }
     }
 
@@ -195,9 +205,6 @@ class MainViewModel: ViewModel() {
         }
 
     }
-    fun getBookBoard(id: String) : BookBoard? {
-        return bookBoardsList.value!!.find { it.docId == id }
-    }
     fun updateBookBoardPublicStatus(bookBoard: BookBoard) {
         dbViewModel.updateBookBoardPublicStatus(bookBoard)
     }
@@ -262,6 +269,10 @@ class MainViewModel: ViewModel() {
         userMatches.postValue(matches)
     }
 
+    fun observeFriendsBookBoards() : LiveData<List<BookBoard>> {
+        return currentFriendBookBoards
+    }
+
     fun observeFriendsList() : MutableLiveData<List<User>> {
         return friendsList
     }
@@ -304,5 +315,6 @@ class MainViewModel: ViewModel() {
     fun observeBooksBookmarked() : LiveData<List<SavedBook>> {
         return booksBookmarked
     }
+
 
 }

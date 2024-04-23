@@ -64,7 +64,40 @@ class DatabaseViewModel {
                 resultListener(listOf())
             }
     }
-    
+
+    fun fetchFriendBookboards(friendId: String, resultListener: (List<BookBoard>)->Unit) {
+        db.collection(rootCollection)
+            .whereEqualTo("userId", friendId)
+            .get()
+            .addOnSuccessListener { result ->
+                Log.d(javaClass.simpleName, "friend bookboards fetch ${result!!.documents.size}")
+                val pendingOperations = mutableListOf<Task<*>>()
+
+                val bookBoardList = result.documents.mapNotNull {
+                    it.toObject(BookBoard::class.java)?.apply {
+                        this.docId = it.id // ensures they all have a docId
+                        val booksFetch = it.reference.collection("books").get()
+                        pendingOperations.add(
+                            booksFetch.addOnSuccessListener { books ->
+                                val savedBooksInBoard = books.mapNotNull { book ->
+                                    book.toObject(SavedBook::class.java)
+                                }
+                                this.booksInBoard = savedBooksInBoard.toMutableList()
+                                println("books recorded: $booksInBoard")
+                            }
+                        )
+                    }
+                }
+                Tasks.whenAllComplete(pendingOperations).addOnCompleteListener {
+                    resultListener(bookBoardList)
+                }
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "friend bookboards fetch FAILED ", it)
+                resultListener(listOf())
+            }
+    }
+
     /////////////////////////////////////////////////////////////
     // Interact with Firestore db
     // https://firebase.google.com/docs/firestore/query-data/order-limit-data

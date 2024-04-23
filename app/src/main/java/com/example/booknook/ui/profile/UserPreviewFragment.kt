@@ -26,14 +26,14 @@ class UserPreviewFragment : Fragment(R.layout.fragment_user_preview) {
 
     private fun initAdapter(binding: FragmentUserPreviewBinding) {
         val bookBoardsAdapter = BookBoardRowAdapter(viewModel) {
-            //findNavController().navigate(BoardsFragmentDirections.navigationBoardsToOneBoard(it))
         }
-
-        viewModel.observeBookBoardsList().observe(viewLifecycleOwner) { bookBoards ->
+        viewModel.fetchFriendBookBoards(args.user)
+        viewModel.observeFriendsBookBoards().observe(viewLifecycleOwner) { bookBoards ->
             // only submitting public BookBoards
             val publicBookBoards = bookBoards.filter { book -> book.isPublic }
             bookBoardsAdapter.submitList(publicBookBoards)
         }
+
         binding.recyclerViewBoards.adapter = bookBoardsAdapter
         binding.recyclerViewBoards.layoutManager = LinearLayoutManager(activity)
     }
