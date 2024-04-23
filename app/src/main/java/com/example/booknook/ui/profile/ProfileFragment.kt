@@ -56,12 +56,26 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        viewModel.observeFriendsList().observe(viewLifecycleOwner) {
+            binding.friends.text = it.size.toString() + " following"
+        }
+
         viewModel.observeBio().observe(viewLifecycleOwner) {
             binding.bio.text = it
         }
         binding.editButton.setOnClickListener {
             val navController = findNavController()
             navController.navigate(R.id.navigation_edit_profile)
+        }
+
+        binding.addUsers.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.navigation_profile_to_search)
+        }
+
+        binding.friends.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.navigation_profile_to_friends)
         }
 
         initAdapter(binding)

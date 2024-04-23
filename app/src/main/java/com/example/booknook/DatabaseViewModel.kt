@@ -3,12 +3,14 @@ package com.example.booknook
 import android.util.Log
 import com.example.booknook.ui.boards.BookBoard
 import com.example.booknook.ui.boards.SavedBook
+import com.example.booknook.ui.profile.User
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.getField
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -62,6 +64,40 @@ class DatabaseViewModel {
                 resultListener(listOf())
             }
     }
+
+    fun fetchFriendBookboards(friendId: String, resultListener: (List<BookBoard>)->Unit) {
+        db.collection(rootCollection)
+            .whereEqualTo("userId", friendId)
+            .get()
+            .addOnSuccessListener { result ->
+                Log.d(javaClass.simpleName, "friend bookboards fetch ${result!!.documents.size}")
+                val pendingOperations = mutableListOf<Task<*>>()
+
+                val bookBoardList = result.documents.mapNotNull {
+                    it.toObject(BookBoard::class.java)?.apply {
+                        this.docId = it.id // ensures they all have a docId
+                        val booksFetch = it.reference.collection("books").get()
+                        pendingOperations.add(
+                            booksFetch.addOnSuccessListener { books ->
+                                val savedBooksInBoard = books.mapNotNull { book ->
+                                    book.toObject(SavedBook::class.java)
+                                }
+                                this.booksInBoard = savedBooksInBoard.toMutableList()
+                                println("books recorded: $booksInBoard")
+                            }
+                        )
+                    }
+                }
+                Tasks.whenAllComplete(pendingOperations).addOnCompleteListener {
+                    resultListener(bookBoardList)
+                }
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "friend bookboards fetch FAILED ", it)
+                resultListener(listOf())
+            }
+    }
+
     /////////////////////////////////////////////////////////////
     // Interact with Firestore db
     // https://firebase.google.com/docs/firestore/query-data/order-limit-data
@@ -338,4 +374,108 @@ class DatabaseViewModel {
 
             }
     }
+
+    fun saveUsername(username : String) {
+        Log.d(javaClass.simpleName, "saving displayName")
+        val userDoc = db.collection(profileCollection).document(getUserId()!!)
+        userDoc.set(hashMapOf("username" to username), SetOptions.merge()) // AI CONTRIBUTION
+    }
+
+    // AI CONTRIBUTION
+    fun fetchUsername(onSuccess: (String) -> Unit) {
+        val userId = getUserId()
+        val userDocRef = db.collection(profileCollection).document(userId!!)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val user = documentSnapshot.getString("username")
+                    if (user != null) {
+                        onSuccess(user)
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
+    // AI CONTRIBUTION
+    fun getAllUsernames(onSuccess: (List<User>) -> Unit) {
+        db.collection(profileCollection)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val users = mutableListOf<User>()
+                for (document in querySnapshot.documents) {
+                    val userId = document.id
+                    val username = document.getString("username")
+                    val displayName = document.getString("displayName")
+                    val bio = "" + document.getString("aboutMe")
+                    if (username != null && displayName != null && !userId.equals(getUserId())) {
+                        users.add(User(userId, username, displayName, bio))
+                    }
+                }
+                Log.d("fetchAllUsers", users.toString())
+                onSuccess(users)
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
+    fun saveFriendsList(friends : List<User>) {
+        val userDoc = db.collection(profileCollection).document(getUserId()!!)
+        userDoc.set(hashMapOf("friendsList" to friends), SetOptions.merge()) // AI CONTRIBUTION
+
+    }
+
+    fun fetchFriendsList(onSuccess: (List<User>) -> Unit) {
+        val userId = getUserId()
+        val userDocRef = db.collection(profileCollection).document(userId!!)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val friendsList = documentSnapshot["friendsList"] as? List<Map<String, String>>
+                    val friendsAsUsers = mutableListOf<User>()
+                    if (friendsList != null) {
+                        for (friend in friendsList) {
+                            friendsAsUsers.add(User(friend.get("userId")!!, friend.get("username")!!, friend.get("displayName")!!, friend.get("aboutMe")!!))
+                        }
+                        onSuccess(friendsAsUsers)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
+    fun fetchUserPreview(userId: String, onSuccess: (List<String>) -> Unit) {
+        val userDocRef = db.collection(profileCollection).document(userId)
+
+        userDocRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val username = documentSnapshot.getString(("username"))
+                    val displayName = documentSnapshot.getString("displayName")
+                    val bio = documentSnapshot.getString("aboutMe")
+                    val userInfo = mutableListOf<String>()
+                    userInfo.add(username!!)
+                    userInfo.add(displayName!!)
+                    userInfo.add(bio!!)
+                    onSuccess(userInfo)
+                } else {
+
+                }
+            }
+            .addOnFailureListener { e ->
+
+            }
+    }
+
 }

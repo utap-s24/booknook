@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.profile.UserPreviewFragment">
 
     <TextView
         android:id="@+id/text_profile"
@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="My Profile"
+        android:text="Guest Profile"
         android:layout_gravity="center"
         android:fontFamily="@font/dm_serif_display_regular"
         android:textColor="@color/dark_magenta"
@@ -21,38 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-
-
-    <ImageButton
-        android:id="@+id/editButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Edit Profile"
-        android:src="@drawable/baseline_edit_24"
-        android:background="@color/fui_transparent"
-        android:layout_gravity="end"
-        android:contentDescription="edit button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageButton
-        android:id="@+id/addUsers"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/baseline_group_add_24"
-        android:layout_gravity="end"
-        android:background="@color/fui_transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/editButton"
-        android:contentDescription="add users button"
-        android:text="Add Friends" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,22 +49,11 @@
             android:textAlignment="center"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/friends"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="0 following"
-            android:textColor="@color/colorAccent"
-            android:textAlignment="center"
-            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/bio"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
             android:layout_margin="8dp"
             android:textSize="15sp"
             android:padding="8dp"
@@ -122,6 +79,7 @@
             android:id="@+id/recyclerViewBoards"
             android:scrollbars="vertical"
             />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
