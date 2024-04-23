@@ -1,6 +1,7 @@
 package com.example.booknook
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -54,6 +55,25 @@ class MainActivity : AppCompatActivity() {
                 viewModel.fetchAllUsers()
             }
         }
+
+        val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                // User is signed in, check if it's a new account
+                val isNewUser = user.metadata?.creationTimestamp == user.metadata?.lastSignInTimestamp
+                if (isNewUser) {
+                    // This is a new user account
+                    viewModel.initNewProfile()
+                    Log.d("authStateListener", "New user account created")
+                } else {
+                    // This is an existing user
+                    Log.d("authStateListener", "Existing user signed in")
+                }
+            }
+        }
+
+        thisAuth.addAuthStateListener(authStateListener)
+
 
     }
 

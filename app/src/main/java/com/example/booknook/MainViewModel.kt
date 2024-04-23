@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val apiKey = "awfn9Y2jBFJD5gpyeqTjbrK9flrjlBAn"
+    private val apiKey = ""
     private val username = MutableLiveData<String>()
     private val dbViewModel = DatabaseViewModel()
 
@@ -68,6 +68,29 @@ class MainViewModel: ViewModel() {
             dbViewModel.fetchBio {
                 userBio.postValue(it)
             }
+            dbViewModel.fetchFriendsList {
+                Log.d("fetchfriends", it.toString())
+                friendsList.postValue(it)
+            }
+        }
+    }
+
+    fun initNewProfile() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            netRefresh()
+            dbViewModel.fetchSavedBooks {
+                booksBookmarked.postValue(it)
+            }
+            dbViewModel.saveUsername(user.email!!)
+            username.postValue(user.email)
+            dbViewModel.saveDisplayName(user.email!!)
+            displayName.postValue(user.email!!)
+            dbViewModel.fetchBookBoard {
+                bookBoardsList.postValue(it)
+            }
+            dbViewModel.saveBio("About me...")
+            userBio.postValue("About me...")
             dbViewModel.fetchFriendsList {
                 Log.d("fetchfriends", it.toString())
                 friendsList.postValue(it)
@@ -293,7 +316,13 @@ class MainViewModel: ViewModel() {
     }
 
     fun isFriend(user : User) : Boolean {
-        return friendsList.value!!.contains(user)
+        for (friend in friendsList.value!!) {
+            if (friend.username == user.username) {
+                return true
+            }
+        }
+        return false
+        //return friendsList.value!!.contains(user)
     }
 
     fun getUserPreview(userId: String) {

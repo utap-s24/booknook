@@ -379,6 +379,7 @@ class DatabaseViewModel {
         Log.d(javaClass.simpleName, "saving displayName")
         val userDoc = db.collection(profileCollection).document(getUserId()!!)
         userDoc.set(hashMapOf("username" to username), SetOptions.merge()) // AI CONTRIBUTION
+        userDoc.set(hashMapOf("userId" to getUserId()), SetOptions.merge())
     }
 
     // AI CONTRIBUTION
@@ -444,7 +445,10 @@ class DatabaseViewModel {
                     val friendsAsUsers = mutableListOf<User>()
                     if (friendsList != null) {
                         for (friend in friendsList) {
-                            friendsAsUsers.add(User(friend.get("userId")!!, friend.get("username")!!, friend.get("displayName")!!, friend.get("aboutMe")!!))
+                            fetchUserPreview(friend.get("userId")!!) {
+                                friendsAsUsers.add(User(friend.get("userId")!!, it[0], it[1], it[2]))
+                            }
+//                            friendsAsUsers.add(User(friend.get("userId")!!, friend.get("username")!!, friend.get("displayName")!!, friend.get("aboutMe")!!))
                         }
                         onSuccess(friendsAsUsers)
                     }
