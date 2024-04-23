@@ -378,11 +378,12 @@ class DatabaseViewModel {
             .addOnSuccessListener { querySnapshot ->
                 val users = mutableListOf<User>()
                 for (document in querySnapshot.documents) {
+                    val userId = document.id
                     val username = document.getString("username")
                     val displayName = document.getString("displayName")
                     val bio = "" + document.getString("aboutMe")
                     if (username != null && displayName != null) {
-                        users.add(User(username, displayName, bio))
+                        users.add(User(userId, username, displayName, bio))
                     }
                 }
                 Log.d("fetchAllUsers", users.toString())
@@ -410,7 +411,7 @@ class DatabaseViewModel {
                     val friendsAsUsers = mutableListOf<User>()
                     if (friendsList != null) {
                         for (friend in friendsList) {
-                            friendsAsUsers.add(User(friend.get("username")!!, friend.get("displayName")!!, friend.get("bio")!!))
+                            friendsAsUsers.add(User(friend.get("userId")!!, friend.get("username")!!, friend.get("displayName")!!, friend.get("aboutMe")!!))
                         }
                         onSuccess(friendsAsUsers)
                     }
