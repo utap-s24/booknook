@@ -3,8 +3,8 @@ An android application for readers to curate their personal library. Readers can
 
 # Features
 
-![OneBoardFrag](https://github.com/utap-s24/booknook/assets/84208868/49e3bc32-249d-4bd6-9734-49b04ee640d5)
-![BoardsFrag](https://github.com/utap-s24/booknook/assets/84208868/2d3828bb-919a-4126-b516-7d48a0de9133)
+<img width="100" height="300" alt="Screenshot 2024-05-19 at 11 48 24 AM" src="https://github.com/utap-s24/booknook/assets/84208868/49e3bc32-249d-4bd6-9734-49b04ee640d5">
+<img width="100" height="300" alt="Screenshot 2024-05-19 at 11 48 24 AM" src="https://github.com/utap-s24/booknook/assets/84208868/f051a720-473c-4a64-a1e8-0a01255ccdac">
 
 - Login or profile creation
 - Up to date New York Times Bestseller books
